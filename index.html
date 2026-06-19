@@ -28,7 +28,12 @@
         #propuesta-pdf { background: white; padding: 35px; border: 1px solid #cbd5e0; margin-top: 25px; border-radius: 4px; box-sizing: border-box; }
         .tabla-cabecera { width: 100%; border-collapse: collapse; margin-bottom: 15px; table-layout: fixed; }
         .tabla-cabecera td { border: 1px solid #0f2d59; padding: 8px; vertical-align: middle; }
-        .cabecera-logo { width: 25%; text-align: center; font-weight: bold; font-size: 1.15em; color: #0f2d59; letter-spacing: 1px; }
+        
+        /* ESTILO LOGO ROBUSTO Y LIMPIO PHARMONY */
+        .cabecera-logo { width: 25%; text-align: center; font-size: 1.4em; color: #0f2d59; letter-spacing: 1.5px; padding: 12px !important; }
+        .logo-main { font-weight: 800; display: block; line-height: 1; }
+        .logo-sub { font-size: 0.3em; display: block; font-weight: 600; color: #4a5568; margin-top: 4px; letter-spacing: 1px; }
+        
         .cabecera-titulo { width: 45%; text-align: center; font-weight: bold; color: #0f2d59; font-size: 0.9em; line-height: 1.3; }
         .cabecera-meta { width: 30%; font-size: 0.75em; padding: 0 !important; }
         .subtabla-meta { width: 100%; border-collapse: collapse; }
@@ -54,7 +59,7 @@
 <body>
 
 <div class="container">
-    <h1>PHARmonysst Control Panel — Ecosistema OHI™ Master v2.7</h1>
+    <h1>PHARmonysst Control Panel — Ecosistema OHI™ Master v2.9</h1>
     
     <div class="grid">
         <!-- BLOQUE 1: PARAMETRIZACIÓN DEL CLIENTE -->
@@ -69,13 +74,13 @@
                     <label for="sector">Sector Corporativo (Matriz de Riesgo)</label>
                     <select id="sector" onchange="calcularTodo()">
                         <option value="Minería">Minería (Riesgo Crítico)</option>
-                        <option value="Gas y Petróleo">Gas y Petróleo / Repsol (Riesgo Crítico)</option>
-                        <option value="Transporte Personal">Transporte de Personal / Civa / Línea (Riesgo Crítico)</option>
+                        <option value="Gas y Petróleo">Gas y Petróleo (Riesgo Crítico)</option>
+                        <option value="Transporte de Personal">Transporte de Personal (Riesgo Crítico)</option>
                         <option value="Pesquero">Sector Pesquero (Riesgo Crítico)</option>
                         <option value="Logística" selected>Logística / Almacenes (Riesgo Medio)</option>
                         <option value="Alimentario">Sector Alimentario (Riesgo Medio)</option>
                         <option value="Entretenimiento">Entretenimiento / Hoteles (Riesgo Medio)</option>
-                        <option value="Teletrabajo">Teletrabajo Puro (Riesgo Mínimo / Descuento)</option>
+                        <option value="Teletrabajo">Teletrabajo (Riesgo Mínimo)</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -115,7 +120,7 @@
             </div>
         </div>
 
-        <!-- BLOQUE 2: ESTRUCTURA MÉDICA & SALUD (COBERTURA VARIABLE) -->
+        <!-- BLOQUE 2: ESTRUCTURA MÉDICA & SALUD -->
         <div class="card">
             <h2>2. Profesionales de la Salud & Bienestar (Por Día/Semana)</h2>
             
@@ -198,7 +203,7 @@
             <div class="perfil-box">
                 <div class="perfil-header">
                     <input type="checkbox" id="chk_psico" onchange="togglePerfil('psico')">
-                    <label for="chk_psico">Psicología Ocupacional (Flexible)</label>
+                    <label for="chk_psico">Psicología Ocupacional (Flexible / Adicional)</label>
                 </div>
                 <div id="group_psico" class="perfil-details">
                     <div class="sub-grid">
@@ -218,9 +223,9 @@
             </div>
         </div>
 
-        <!-- BLOQUE 3: ESTRUCTURA DE INGENIERÍA SSOMA & SIG (TARIFA FIJA MENSUAL) -->
+        <!-- BLOQUE 3: ESTRUCTURA DE INGENIERÍA SSOMA & SIG -->
         <div class="card">
-            <h2>3. Ecosistema de Ingeniería SSOMA & SIG (Asignación Mensual Fija)</h2>
+            <h2>3. Ecosistema de Ingeniería SSOMA & SIG (Asignación Mensual Fixa)</h2>
             <p style="font-size:0.75em; color:#718096; margin-top:-5px; margin-bottom:10px;">Estructuras de personal técnico senior cotizados bajo tarifa plana mensual corporativa:</p>
             
             <div class="checkbox-group" style="margin-bottom: 6px;">
@@ -262,7 +267,7 @@
             </div>
             <div class="checkbox-group">
                 <input type="checkbox" id="fee_transporte" checked onchange="calcularTodo()">
-                <label for="fee_transporte">Incluir Fee de Transporte y Despliegue de Materiales</label>
+                <label for="fee_transporte">Incluir Fee de Transporte y Despliegue de Materiales Central</label>
             </div>
         </div>
     </div>
@@ -277,9 +282,10 @@
     <div id="propuesta-pdf">
         <table class="tabla-cabecera">
             <tr>
+                <!-- LOGO PHARMONY REDISEÑADO ROBUSTO SIN LÍNEAS -->
                 <td class="cabecera-logo">
-                    PHARMONY OHI™<br>
-                    <span style="font-size:0.32em; display:block; font-weight:normal; color:#4a5568; margin-top:1px;">OCCUPATIONAL HEALTH INTELLIGENCE</span>
+                    <span class="logo-main">PHARMONY</span>
+                    <span class="logo-sub">HEALTH & SAFETY INTELLIGENCE</span>
                 </td>
                 <td class="cabecera-titulo">
                     ESTIMACIÓN DE INVERSIÓN CORPORATIVA: SISTEMA INTEGRAL OHI™<br>
@@ -322,9 +328,13 @@
         </div>
 
         <!-- BENEFICIO GRATUITO EXCLUSIVO -->
-        <div class="box-seccion" style="border-left: 4px solid #38a169; background-color: #f0fff4;">
-            <strong style="color: #276749;">🎁 BENEFICIO EXCLUSIVO CORPORATE (PLUS PHARMONY):</strong>
-            <p style="margin: 3px 0 0 0; color: #276749;">Pharmony otorga de manera **100% gratuita 2 capacitaciones anuales in situ** para el cumplimiento normativo estricto ante SUNAFIL[cite: 2]. Los temas serán dictados por nuestro equipo especializado (Médico Ocupacional, Psicóloga Ocupacional o Nutricionista Ocupacional) alineados de forma exacta a la casuística e intereses de su organización[cite: 2].</p>
+        <div id="boxBeneficios" class="box-seccion" style="border-left: 4px solid #38a169; background-color: #f0fff4;">
+            <strong style="color: #276749;">🎁 BENEFICIO EXCLUSIVO (PLUS PHARMONY):</strong>
+            <p style="margin: 3px 0 0 0; color: #276749; line-height: 1.4;">
+                • Pharmony otorga de manera **100% gratuita 2 capacitaciones anuales in situ** para el cumplimiento normativo estricto ante SUNAFIL[cite: 2] dictadas por nuestro equipo médico o nutricional[cite: 2].<br>
+                • <strong>Asignación Libre de Psicología:</strong> Se otorga una bolsa de <strong id="lblPsicoGratis">4</strong> horas mensuales de consultoría psicológica totalmente gratuitas para soporte de riesgos psicosociales.<br>
+                • <strong>Campaña de Tamizaje de Salud:</strong> Incluye de forma gratuita una campaña anual de despistaje in situ (Toma de Glucosa, Presión Arterial, Peso, Talla e IMC) para el programa de vigilancia, con entrega de un Reporte Epidemiológico consolidado con los hallazgos.
+            </p>
         </div>
 
         <!-- TABLA DE COSTOS TRANSPARENTE -->
@@ -342,6 +352,17 @@
             </tbody>
         </table>
 
+        <!-- CONDICIONES GENERALES DEL SERVICIO -->
+        <div class="box-seccion" style="border-left: 4px solid #4a5568; background-color: #f7fafc; margin-top:15px;">
+            <strong>📜 CONDICIONES GENERALES DEL SERVICIO:</strong>
+            <ul style="font-size:0.9em; padding-left:15px; margin-top:5px; list-style-type: square;">
+                <li><strong>Periodicidad y Continuidad:</strong> El servicio médico se ejecutará mensualmente de forma ininterrumpida de acuerdo a los días pactados. El personal asistencial mantendrá un cronograma fijo validado de mutuo acuerdo al inicio de cada periodo.</li>
+                <li><strong>Confidencialidad Absoluta:</strong> De conformidad con la Ley N° 29783 y la Ley General de Salud, las historias clínicas e información médica de los colaboradores se encuentran bajo estricta reserva y custodia del médico ocupacional de Pharmony, no pudiendo ser expuestos de forma individual ante áreas administrativas.</li>
+                <li><strong>Obligaciones de la Empresa:</strong> El cliente se compromete a brindar un espacio físico privado y acondicionado para las atenciones médicas y de enfermería (tópico o consultorio), asegurando la conectividad básica para los reportes de vigilancia.</li>
+                <li><strong>Facturación y Sustentos:</strong> La facturación se emite de forma mensual vencida. Cualquier viaje, despliegue o comisión de servicios fuera de la sede central declarada a **provincias o filiales remotas se facturará por separado**, adjuntando de manera transparente las facturas y liquidaciones de gastos incurridos (viáticos, pasajes o alojamientos).</li>
+            </ul>
+        </div>
+
         <!-- INSTRUCCIÓN DE ACEPTACIÓN COMERCIAL -->
         <div class="box-seccion" style="background-color: #edf2f7; border: 1px solid #cbd5e0; margin-top: 15px;">
             <strong>📩 INSTRUCCIONES DE ACTIVACIÓN DEL SERVICIO:</strong>
@@ -350,7 +371,7 @@
         </div>
 
         <p style="margin-top:12px; font-size: 0.72em; color: #4a5568; line-height: 1.3;">
-            <strong>Condiciones Financieras:</strong> Precios expresados en Soles (S/.) netos sin IGV. Crédito aprobado a <span id="pdfDias">30</span> días netos previa conformidad del periodo mensual. Vigencia comercial de la proforma: 30 días calendarios.
+            <strong>Condiciones Financieras:</strong> Precios expresados en Soles (S/.) netos sin IGV. Crédito aprobado a <span id="pdfDias">30</span> días netos previa conformidad del periodo mensual. Gastos de traslados a provincia no incluidos (se facturan al costo sustentado). Vigencia comercial de la proforma: 30 días calendarios.
         </p>
     </div>
 
@@ -377,7 +398,6 @@
         const factorCredito = parseFloat(document.getElementById('credito').value);
         const versionSelec = document.getElementById('version').value;
         
-        // Alerta SUNAFIL
         const bannerAlerta = document.getElementById('alertaLegalMinsa');
         const chkMedico = document.getElementById('chk_medico').checked;
         const diasMedico = parseInt(document.getElementById('dias_medico').value) || 0;
@@ -388,9 +408,8 @@
             bannerAlerta.style.display = 'none';
         }
 
-        // Lógica de Multiplicador por Sector / Riesgo
         let factorSector = 1.0; 
-        if (["Minería", "Gas y Petróleo", "Transporte Personal", "Pesquero"].includes(sector)) {
+        if (["Minería", "Gas y Petróleo", "Transporte de Personal", "Pesquero"].includes(sector)) {
             factorSector = 1.08; 
         } else if (sector === "Teletrabajo") {
             factorSector = 0.92; 
@@ -403,7 +422,6 @@
         let totalCotizacion = 0;
         let htmlCuerpo = "";
 
-        // 1. MÉDICO OCUPACIONAL
         if (document.getElementById('chk_medico').checked) {
             let valorDia = parseFloat(document.getElementById('sueldo_medico').value) || 1800;
             if(valorDia < 1800) valorDia = 1800; 
@@ -418,7 +436,6 @@
             </tr>`;
         }
 
-        // 2. ENFERMERO OCUPACIONAL
         if (document.getElementById('chk_enferm_esp').checked) {
             let valorDia = parseFloat(document.getElementById('sueldo_enferm_esp').value) || 1100;
             if(valorDia < 1100) valorDia = 1100;
@@ -433,7 +450,6 @@
             </tr>`;
         }
 
-        // 3. ENFERMERO ASISTENCIAL
         if (document.getElementById('chk_enferm_asist').checked) {
             let valorDia = parseFloat(document.getElementById('sueldo_enferm_asist').value) || 850;
             if(valorDia < 850) valorDia = 850;
@@ -448,12 +464,10 @@
             </tr>`;
         }
 
-        // 4. TRABAJADORA SOCIAL (VARIABLE PRORRATEADA DESDE TARIFA COMPLETA DE 5 DÍAS)
         if (document.getElementById('chk_bienestar').checked) {
             let sueldoBase = parseFloat(document.getElementById('sueldo_bienestar').value) || 4500;
             if(sueldoBase < 4500) sueldoBase = 4500;
             const dias = parseInt(document.getElementById('dias_bienestar').value) || 1;
-            // Prorrateo basado en semana estándar de 5 días laborales
             const subtotal = (sueldoBase / 5) * dias * factorSector * factorCredito;
             totalCotizacion += subtotal;
             htmlCuerpo += `<tr>
@@ -464,7 +478,6 @@
             </tr>`;
         }
 
-        // 5. PSICOLOGÍA FLEXIBLE
         if (document.getElementById('chk_psico').checked) {
             const tipo = document.getElementById('tipo_psico').value;
             const cant = parseInt(document.getElementById('cant_psico').value) || 1;
@@ -482,13 +495,12 @@
             totalCotizacion += subtotal;
             htmlCuerpo += `<tr>
                 <td style="text-align:center; font-weight:bold;">OHI-PSI</td>
-                <td><strong>Servicios de Psicología Ocupacional</strong><br><span style="font-size:0.9em; color:#665;">${detalleText}</span></td>
+                <td><strong>Servicios de Psicología Ocupacional (Adicional)</strong><br><span style="font-size:0.9em; color:#665;">${detalleText}</span></td>
                 <td style="text-align:center; text-transform:uppercase;">${tipo}</td>
                 <td style="text-align:right; font-weight:bold;">S/. ${subtotal.toFixed(2)}</td>
             </tr>`;
         }
 
-        // 6. MATRIZ SSOMA / SIG MENSUALIZADA FIJA
         const ssomaItems = [
             { id: 'ing_soma', cod: 'SIG-ING-SOMA', nombre: 'Ingeniero / Supervisor SSOMA Colegiado', tarifaMensual: 7500, desc: 'Ingeniero Residente responsable del liderazgo normativo y operacional del SGSST en planta/mina.' },
             { id: 'asist_soma', cod: 'SIG-ASIST-SOMA', nombre: 'Asistente SSOMA In Situ (Bachiller)', tarifaMensual: 3800, desc: 'Bachiller destacado para el control diario de campo, registros obligatorios y soporte operativo.' },
@@ -509,7 +521,6 @@
             }
         });
 
-        // 7. ADICIONALES
         if (sedesTopico > 0) {
             const inversionTopicos = sedesTopico * 250.00 * factorCredito;
             totalCotizacion += inversionTopicos;
@@ -553,13 +564,23 @@
             totalCotizacion += feeTrans;
             htmlCuerpo += `<tr>
                 <td style="text-align:center; font-weight:bold;">OHI-LOG-TRA</td>
-                <td><strong>Fee de Respaldo Logístico, SCTR y Transporte</strong><br><span style="font-size:0.9em; color:#665;">Despliegue de equipamiento médico y coberturas de seguro complementario de campo.</span></td>
+                <td><strong>Fee de Respaldo Logístico, SCTR y Transporte</strong><br><span style="font-size:0.9em; color:#665;">Despliegue central de equipamiento médico y coberturas de seguro complementario.</span></td>
                 <td style="text-align:center;">MENSUAL</td>
                 <td style="text-align:right; font-weight:bold;">S/. ${feeTrans.toFixed(2)}</td>
             </tr>`;
         }
 
-        // FILA FINAL DE SUMATORIA
+        // LÓGICA AUTOMÁTICA DE HORAS DE PSICOLOGÍA GRATUITAS
+        let horasPsicoGratis = 4;
+        if (totalCotizacion >= 6500 && totalCotizacion <= 10000) {
+            horasPsicoGratis = 8;
+        } else if (totalCotizacion > 10000 && totalCotizacion <= 20000) {
+            horasPsicoGratis = 12;
+        } else if (totalCotizacion > 20000) {
+            horasPsicoGratis = 18; 
+        }
+        document.getElementById('lblPsicoGratis').innerText = horasPsicoGratis;
+
         htmlCuerpo += `<tr style="font-weight: bold; background-color: #f8fafc; font-size: 1.05em;">
             <td colspan="3" style="text-align: right; text-transform: uppercase; color:#0f2d59; padding: 10px;">Inversión Total Mensual del Ecosistema OHI™ (Neto sin IGV):</td>
             <td style="color: #0f2d59; text-align: right; padding: 10px; font-size: 1.1em;">S/. ${totalCotizacion.toFixed(2)}</td>
@@ -567,7 +588,6 @@
 
         document.getElementById('cuerpoTablaCostos').innerHTML = htmlCuerpo;
 
-        // Sincronización con la vista del PDF
         document.getElementById('pdfSubtitulo').innerText = `Cliente: ${cliente} · Sector: ${sector} · Sedes Operativas: ${sedes}`;
         document.getElementById('pdfCodigo').innerText = codigoGenerado;
         document.getElementById('pdfVersion').innerText = versionSelec;
@@ -576,7 +596,6 @@
         const selectCredito = document.getElementById('credito');
         document.getElementById('pdfDias').innerText = selectCredito.options[selectCredito.selectedIndex].text.split(' ')[0];
 
-        // Sincronizar enlace de Correo Corporativo - Remitente directo comercialperu@
         const asuntoCor = encodeURIComponent(`Propuesta del Sistema Corporativo Integrado OHI™ — Pharmony (${cliente})`);
         const cuerpoCor = encodeURIComponent(`Estimado equipo de ${cliente},\n\nRemitimos los términos económicos del Sistema Corporativo Integrado de Inteligencia de Salud PHARMONY OHI™ bajo el registro oficial ${codigoGenerado}.\n\nInversión Cotizada: S/. ${totalCotizacion.toFixed(2)} (Neto sin IGV).\n\nQuedamos a su disposición para la coordinación del despliegue operativo.\n\nAtentamente,\nÁrea Comercial\nPHARMONY SST`);
         document.getElementById('btnEmail').href = `mailto:comercialperu@pharmonysst.com?subject=${asuntoCor}&body=${cuerpoCor}`;
