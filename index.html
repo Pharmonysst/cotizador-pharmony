@@ -1,50 +1,221 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>PHARMONY OHI™ Master v2.9</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-slate-50 p-6">
-    <div class="max-w-6xl mx-auto space-y-6">
-        
-        <!-- 1. CONFIGURACIÓN DE SEDE Y TÓPICOS -->
-        <div class="bg-white p-6 rounded-lg shadow-sm border border-slate-200">
-            <h2 class="font-bold text-lg mb-4">1. Configuración de Sede y Tópicos</h2>
-            <div class="grid grid-cols-2 gap-4">
-                <input type="text" placeholder="Nombre de Sede Operativa" class="p-2 border rounded">
-                <input type="number" placeholder="N° de Tópicos a implementar" class="p-2 border rounded">
-            </div>
-            <p class="text-xs text-slate-500 mt-2 italic">*Implementación técnica realizada en el espacio provisto por el contratante.</p>
-        </div>
+<script>
+    // --- CONFIGURACIÓN MÍNIMA Y CONSTANTES FINANCIERAS (PROTECCIÓN DE PISOS) ---
+    const MIN_TARIFS = {
+        eng: 7500,
+        doc: 3800,
+        nurse: 4200
+    };
 
-        <!-- 2. PANEL DE CONTROL FINANCIERO (BLOQUEADO/PRIVADO) -->
-        <div id="financial-panel" class="bg-white p-6 rounded-lg border-2 border-red-200 shadow-md">
-            <div class="flex justify-between items-center mb-4">
-                <h2 class="font-bold text-red-800 flex items-center gap-2">
-                    <span class="text-xl">🔒</span> Panel de Control Financiero Interno (Solo Jefatura)
-                </h2>
-                <button class="bg-red-100 text-red-600 px-4 py-1 rounded text-sm font-bold">Bloquear Panel</button>
-            </div>
-            <div class="grid grid-cols-3 gap-4">
-                <div class="bg-red-50 p-4 rounded border border-red-100">
-                    <p class="text-xs font-bold text-red-700">COSTO REAL DE OPERACIÓN</p>
-                    <p class="text-2xl font-black text-red-900">S/. 11,100.00</p>
-                </div>
-                <div class="bg-emerald-50 p-4 rounded border border-emerald-100">
-                    <p class="text-xs font-bold text-emerald-700">UTILIDAD NETA ESTIMADA (50%)</p>
-                    <p class="text-2xl font-black text-emerald-900">S/. 5,725.00</p>
-                </div>
-                <div class="bg-blue-50 p-4 rounded border border-blue-100">
-                    <p class="text-xs font-bold text-blue-700">COMISIÓN VENDEDOR</p>
-                    <p class="text-2xl font-black text-blue-900">S/. 504.75</p>
-                </div>
-            </div>
-        </div>
+    // Estructura interna de costos reales (Base imponible de operación)
+    const REAL_COSTS = {
+        eng: 5200,    // Planilla básica + SCTR + EPP
+        doc: 2700,    // Honorarios médicos base
+        nurse: 3100,  // Planilla enfermería + SCTR
+        training_hour: 110, // Costo real del ponente por hora
+        topic_base: 450     // Costo real reposición insumos básicos
+    };
 
-        <!-- 3. PROPUESTA ECONÓMICA CONSOLIDADA -->
-        <!-- (Aquí se renderiza tu tabla OHI con servicios en verde) -->
+    const TRAINING_PRICE_PER_HOUR = 240.00;
+    const COMMISSION_RATE = 0.04; // 4% de comisión sobre el subtotal de facturación regular
+
+    // --- INICIALIZACIÓN ---
+    document.addEventListener("DOMContentLoaded", () => {
+        // Establecer fecha de hoy en el PDF en formato local
+        const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+        document.getElementById('pdf-current-date').innerText = `Fecha: ${new Date().toLocaleDateString('es-PE', dateOptions)}`;
         
-    </div>
-</body>
-</html>
+        // Ejecutar primer cálculo automático con valores por defecto
+        calculateQuote();
+    });
+
+    // --- FUNCIÓN CENTRAL DE CÁLCULO COMERCIAL Y FINANCIERO ---
+    function calculateQuote() {
+        // 1. Captura de inputs principales
+        const riskFactor = parseFloat(document.getElementById('sector-risk').value);
+        
+        const engCost = parseFloat(document.getElementById('eng-cost').value) || MIN_TARIFS.eng;
+        const docCost = parseFloat(document.getElementById('doc-cost').value) || MIN_TARIFS.doc;
+        const nurseCost = parseFloat(document.getElementById('nurse-cost').value) || MIN_TARIFS.nurse;
+
+        const includeTopic = document.getElementById('include-topic').checked;
+        const topicMaintenance = includeTopic ? (parseFloat(document.getElementById('topic-maintenance').value) || 0) : 0;
+        const trainingHours = parseFloat(document.getElementById('training-hours').value) || 0;
+
+        // 2. Cálculos Comerciales (Subtotales afectos al factor de riesgo)
+        const staffSubtotal = (engCost + docCost + nurseCost) * riskFactor;
+        const trainingSubtotal = (trainingHours * TRAINING_PRICE_PER_HOUR) * riskFactor;
+        const topicSubtotal = topicMaintenance * riskFactor; // Afecto a riesgo por variabilidad operativa regional
+
+        const totalMonthlyRegular = staffSubtotal + trainingSubtotal + topicSubtotal;
+
+        // 3. Renderizado en el Panel Interactivo (Interfaz de Usuario)
+        document.getElementById('summary-staff').innerText = formatCurrency(staffSubtotal);
+        document.getElementById('summary-topic').innerText = formatCurrency(topicSubtotal);
+        document.getElementById('summary-training').innerText = formatCurrency(trainingSubtotal);
+        document.getElementById('summary-factor').innerText = `${riskFactor.toFixed(2)}x`;
+        document.getElementById('total-monthly').innerText = formatCurrency(totalMonthlyRegular);
+
+        // Control visual del contenedor de Costo Inicial del Mes 1
+        const oneTimeBox = document.getElementById('one-time-cost-box');
+        if (includeTopic) {
+            oneTimeBox.classList.remove('hidden');
+        } else {
+            oneTimeBox.classList.add('hidden');
+        }
+
+        // 4. MÓDULO FINANCIERO INTERNO (Solo Jefatura)
+        calculateInternalFinancials(engCost, docCost, nurseCost, trainingHours, includeTopic, topicMaintenance, totalMonthlyRegular, riskFactor);
+
+        // 5. Inyección síncrona en la Plantilla Maestra del PDF
+        syncTemplatePDF(staffSubtotal, topicSubtotal, trainingSubtotal, totalMonthlyRegular, includeTopic);
+    }
+
+    // --- CÁLCULO DE MARGENES, UTILIDADES Y COMISIONES ---
+    function calculateInternalFinancials(eng, doc, nurse, hours, hasTopic, topicMaint, totalRevenue, riskFactor) {
+        // Costo de operación real adaptado por el factor de riesgo (escalabilidad de riesgos SCTR/Seguros)
+        let totalInternalCost = (REAL_COSTS.eng + REAL_COSTS.doc + REAL_COSTS.nurse) * (1 + (riskFactor - 1) * 0.5); 
+        
+        totalInternalCost += (hours * REAL_COSTS.training_hour);
+        
+        if (hasTopic) {
+            totalInternalCost += REAL_COSTS.topic_base;
+        }
+
+        // Comisión directa sobre el valor cobrado regular
+        const commission = totalRevenue * COMMISSION_RATE;
+        
+        // Utilidad Neta = Ingreso Total - Costo Real Operativo - Comisión del Vendedor
+        const netProfit = totalRevenue - totalInternalCost - commission;
+
+        // Inyección en el panel oculto
+        document.getElementById('internal-cost').innerText = formatCurrency(totalInternalCost);
+        document.getElementById('internal-profit').innerText = formatCurrency(netProfit);
+        document.getElementById('internal-commission').innerText = formatCurrency(commission);
+
+        // Alerta visual si la utilidad neta entra en terreno crítico (Menor al 20% del ingreso total)
+        const profitBox = document.getElementById('internal-profit').parentElement;
+        if (netProfit < (totalRevenue * 0.20)) {
+            profitBox.className = "p-4 bg-amber-50 rounded-xl border border-amber-100 text-amber-900";
+        } else {
+            profitBox.className = "p-4 bg-emerald-50 rounded-xl border border-emerald-100 text-emerald-900";
+        }
+    }
+
+    // --- ENLAZADOR DINÁMICO CLIENTE -> TEMPLATE PDF ---
+    function syncTemplatePDF(staff, topic, training, total, hasTopic) {
+        // Rescatar textos de los inputs generales
+        const clientName = document.getElementById('client-name').value || "CLIENTE POR DESIGNAR";
+        const clientLocation = document.getElementById('client-location').value || "SEDE CENTRAL";
+
+        // Mapear al PDF
+        document.getElementById('pdf-client-title').innerText = clientName.toUpperCase();
+        document.getElementById('pdf-client-loc').innerText = clientLocation.toUpperCase();
+
+        document.getElementById('pdf-val-staff').innerText = formatCurrency(staff);
+        document.getElementById('pdf-val-topic').innerText = formatCurrency(topic);
+        document.getElementById('pdf-val-training').innerText = formatCurrency(training);
+        document.getElementById('pdf-val-total').innerText = formatCurrency(total);
+
+        // Control de bloques dinámicos dentro del PDF
+        const pdfTopicBlock = document.getElementById('pdf-topic-block');
+        const pdfOneTimeContainer = document.getElementById('pdf-one-time-container');
+        const pdfRowTopic = document.getElementById('pdf-row-topic');
+
+        if (hasTopic) {
+            pdfTopicBlock.classList.remove('hidden');
+            pdfOneTimeContainer.classList.remove('hidden');
+            pdfRowTopic.classList.remove('hidden');
+        } else {
+            pdfTopicBlock.classList.add('hidden');
+            pdfOneTimeContainer.classList.add('hidden');
+            pdfRowTopic.classList.add('hidden');
+        }
+    }
+
+    // --- VALIDACIONES DE CONTROL OPERATIVO (PROTECCIÓN DE PRECIOS PISO) ---
+    function verifyFloor(profile, floorValue) {
+        const inputElement = document.getElementById(`${profile}-cost`);
+        let currentValue = parseFloat(inputElement.value);
+
+        if (currentValue < floorValue || isNaN(currentValue)) {
+            inputElement.value = floorValue;
+            alert(`⚠️ ALERTA DE CONTROL: La tarifa ingresada está por debajo del piso corporativo protegido (S/. ${floorValue}.00). Se ha restablecido el monto mínimo.`);
+        }
+        
+        // Modificar badge de estado si se cobra más del mínimo
+        const alertBadge = document.getElementById(`${profile}-alert`);
+        if (parseFloat(inputElement.value) > floorValue) {
+            alertBadge.innerText = "Margen Optimizado";
+            alertBadge.className = "px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-emerald-50 text-emerald-700 border border-emerald-200";
+        } else {
+            alertBadge.innerText = "Margen Mínimo";
+            alertBadge.className = "px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-amber-50 text-amber-700 border border-amber-200";
+        }
+
+        calculateQuote();
+    }
+
+    // Cambio dinámico rápido de perfiles preestablecidos
+    function updateStaffPrice(profile) {
+        const selector = document.getElementById(`${profile}-profile`).value;
+        const costInput = document.getElementById(`${profile}-cost`);
+        const basePrice = MIN_TARIFS[profile];
+
+        if (selector === "base") {
+            costInput.value = basePrice;
+        } else if (selector === "recomendado") {
+            costInput.value = Math.round(basePrice * 1.15);
+        } else if (selector === "corporativo") {
+            costInput.value = Math.round(basePrice * 1.40);
+        }
+
+        verifyFloor(profile, basePrice);
+    }
+
+    // --- CONTROL VISUAL DEL PANEL FINANCIERO DE JEFATURA ---
+    function toggleFinancials() {
+        const content = document.getElementById('financial-content');
+        const btn = document.getElementById('lock-btn');
+
+        if (content.classList.contains('hidden')) {
+            content.classList.remove('hidden');
+            btn.innerText = "🔒 Bloquear Panel";
+            btn.className = "text-xs bg-red-100 hover:bg-red-200 px-3 py-1.5 rounded-lg font-semibold text-red-700 transition-colors cursor-pointer";
+        } else {
+            content.classList.add('hidden');
+            btn.innerText = "Desbloquear Panel";
+            btn.className = "text-xs bg-slate-100 hover:bg-slate-200 px-3 py-1.5 rounded-lg font-semibold text-slate-600 transition-colors cursor-pointer";
+        }
+    }
+
+    // --- UTILITARIOS ---
+    function formatCurrency(amount) {
+        return new Intl.NumberFormat('es-PE', { style: 'currency', currency: 'PEN' }).format(amount);
+    }
+
+    // --- MOTOR DE GENERACIÓN PDF (HTML2PDF CORRECCIONES DE RENDER) ---
+    function generatePDF() {
+        const element = document.getElementById('pdf-template');
+        const clientName = document.getElementById('client-name').value || "CLIENTE";
+        
+        // Hacer visible temporalmente el template limpio para la captura
+        element.classList.remove('hidden');
+
+        // Configuración de renderizado limpio para html2pdf
+        const opt = {
+            margin:       10,
+            filename:     `Propuesta_SST_Pharmony_${clientName.replace(/[^a-zA-Z0-9]/g, "_")}.pdf`,
+            image:        { type: 'jpeg', quality: 0.98 },
+            html2canvas:  { scale: 2, useCORS: true, letterRendering: true },
+            jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        };
+
+        // Ejecutar promesa de renderizado y volver a ocultar el nodo contenedor
+        html2pdf().set(opt).from(element).save().then(() => {
+            element.classList.add('hidden');
+        }).catch((err) => {
+            console.error("Error generando PDF: ", err);
+            element.classList.add('hidden');
+        });
+    }
+</script>
