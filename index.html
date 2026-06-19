@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cotizador Profesional — Pharmony</title>
+    <!-- Librería gratuita para generar PDFs -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f6f9;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #1a365d;
+            border-bottom: 3px solid #2b6cb0;
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+        h2 {
+            color: #2b6cb0;
+            margin-top: 25px;
+            font-size: 1.3em;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        .card {
+            background: #f7fafc;
+            border: 1px solid #e2e8f0;
+            padding: 15px;
+            border-radius: 6px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #4a5568;
+        }
+        select, input[type="number"], input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #cbd5e0;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            font-size: 0.9em;
+        }
+        th, td {
+            border: 1px solid #cbd5e0;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #2b6cb0;
+            color: white;
+        }
+        .actions-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .btn {
+            padding: 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+            text-align: center;
+            text-decoration: none;
+        }
+        .btn-pdf { background-color: #e53e3e; color: white; }
+        .btn-email { background-color: #3182ce; color: white; }
+        .btn:hover { opacity: 0.9; }
+        
+        /* Estilo de la Hoja de la Propuesta que se convertirá en PDF */
+        #propuesta-pdf {
+            background: white;
+            padding: 40px;
+            border: 1px solid #e2e8f0;
+            margin-top: 30px;
+            border-radius: 4px;
+        }
+        .logo-placeholder {
+            font-size: 24px;
+            font-weight: bold;
+            color: #1a365d;
+            border-bottom: 2px solid #1a365d;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Cotizador Inteligente de Servicios SST</h1>
+    
+    <div class="grid">
+        <div class="card">
+            <h2>1. Datos del Cliente</h2>
+            <div class="form-group">
+                <label for="cliente">Nombre de la Empresa</label>
+                <input type="text" id="cliente" value="Cliente S.A.C." oninput="calcularTodo()">
+            </div>
+            <div class="form-group">
+                <label for="credito">Plazo de Pago</label>
+                <select id="credito" onchange="calcularTodo()">
+                    <option value="1.000">30 días (Línea Base Regular)</option>
+                    <option value="1.0075">45 días (+0.75% recargo)</option>
+                    <option value="1.015">60 días (+1.50% recargo)</option>
+                    <option value="1.030">90 días (+3.00% recargo)</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>2. Configuración del Servicio</h2>
+            <div class="form-group">
+                <label for="perfil">Personal Asignado</label>
+                <select id="perfil" onchange="cambiarPerfil()">
+                    <option value="4200">Médico Ocupacional (Diplomado)</option>
+                    <option value="2700">Enfermero(a) (Diplomado)</option>
+                    <option value="2200">Enfermero(a) (Sin Especialidad)</option>
+                    <option value="2800">Psicólogo / Analista SOMA</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="sueldo">Sueldo Base Mensual (S/.)</label>
+                <input type="number" id="sueldo" value="4200" oninput="calcularTodo()">
+            </div>
+            <div class="form-group">
+                <label for="modalidad">Modalidad</label>
+                <select id="modalidad" onchange="calcularTodo()">
+                    <option value="Presencial">Presencial</option>
+                    <option value="Remoto">Remoto</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>3. Adicionales de Tópico</h2>
+            <div class="checkbox-group">
+                <input type="checkbox" id="incluyeTopico" checked onchange="calcularTodo()">
+                <label for="incluyeTopico">Operación de Tópico (Base S/. 200)</label>
+            </div>
+            <div class="checkbox-group">
+                <input type="checkbox" id="residuos" checked onchange="calcularTodo()">
+                <label for="residuos">Gestión de Residuos (+S/. 200)</label>
+            </div>
+        </div>
+    </div>
+
+    <!-- DOCUMENTO DE VISTA PREVIA (Esto es lo que se vuelve PDF) -->
+    <div id="propuesta-pdf">
+        <div class="logo-placeholder">PHARMONY | Salud Ocupacional</div>
+        <p><strong>PROPUESTA TÉCNICO-ECONÓMICA DE SERVICIOS SST</strong></p>
+        <p><strong>Preparado para:</strong> <span id="pdfCliente">Cliente S.A.C.</span></p>
+        <p>De nuestra consideración, presentamos los costos mensuales calculados para la gestión integral de su salud ocupacional:</p>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Detalle del Servicio Integral</th>
+                    <th>Modalidad</th>
+                    <th>Inversión Mensual</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Asignación de Personal de Salud Especializado con Dirección Médica y soporte legal continuo.</td>
+                    <td id="pdfModalidad">Presencial</td>
+                    <td id="pdfMontoPersonal">S/. 0.00</td>
+                </tr>
+                <tr id="filaTopicoPdf">
+                    <td>Servicio de Mantenimiento y Operación de Tópico Médico in Situ (incluye reposición de insumos de primera respuesta y conectividad).</td>
+                    <td>Presencial</td>
+                    <td id="pdfMontoTopico">S/. 0.00</td>
+                </tr>
+                <tr style="font-weight: bold; background-color: #f7fafc;">
+                    <td colspan="2">COSTO MENSUAL DEL SERVICIO INTEGRAL (SIN IGV)</td>
+                    <td id="pdfMontoTotal" style="color: #2b6cb0;">S/. 0.00</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p style="margin-top:20px; font-size: 0.85em; color: #718096;">
+            <strong>Condiciones Comerciales:</strong><br>
+            • Validez de la propuesta: 30 días.<br>
+            • Periodicidad del pago: Crédito corporativo a <span id="pdfDias">30</span> días netos posteriores a la factura.<br>
+            • Incluye coberturas de ley: SCTR Salud y Pensión para el personal destacado presencial.
+        </p>
+    </div>
+
+    <!-- BOTONES DE AUTOMATIZACIÓN -->
+    <div class="actions-grid">
+        <button class="btn btn-pdf" onclick="descargarPDF()">📥 Descargar Propuesta en PDF</button>
+        <a id="btnEmail" class="btn btn-email" href="#">✉️ Enviar por Correo al Cliente</a>
+    </div>
+</div>
+
+<script>
+    function cambiarPerfil() {
+        document.getElementById('sueldo').value = document.getElementById('perfil').value;
+        calcularTodo();
+    }
+
+    function calcularTodo() {
+        const cliente = document.getElementById('cliente').value;
+        const sueldoBase = parseFloat(document.getElementById('sueldo').value) || 0;
+        const factorCredito = parseFloat(document.getElementById('credito').value);
+        const modalidad = document.getElementById('modalidad').value;
+        const incluyeTopico = document.getElementById('incluyeTopico').checked;
+        const gestionaResiduos = document.getElementById('residuos').checked;
+        
+        const selectCredito = document.getElementById('credito');
+        const diasTexto = selectCredito.options[selectCredito.selectedIndex].text.split(' ')[0];
+
+        // Cálculos internos (Margen 25% asegurado)
+        const cargaMype = sueldoBase * 0.215;
+        const fondoReten = sueldoBase * 0.04;
+        const sctr = (modalidad === 'Presencial') ? 56.00 : 0;
+        const emo = 10.83;
+        const eppUniformes = (modalidad === 'Presencial') ? 20.83 : 0;
+        const costoPersonalTotal = sueldoBase + cargaMype + fondoReten + sctr + emo + eppUniformes;
+        const precioPersonal = (costoPersonalTotal / 0.75) * factorCredito;
+
+        let precioTopico = 0;
+        if (incluyeTopico) {
+            let costoTopico = 150 + 43.33;
+            if (gestionaResiduos) costoTopico += 200;
+            precioTopico = (costoTopico / 0.75) * factorCredito;
+            document.getElementById('filaTopicoPdf').style.display = 'table-row';
+        } else {
+            document.getElementById('filaTopicoPdf').style.display = 'none';
+        }
+
+        const precioTotalGeneral = precioPersonal + precioTopico;
+
+        // Inyectar datos en la vista del documento PDF
+        document.getElementById('pdfCliente').innerText = cliente;
+        document.getElementById('pdfModalidad').innerText = modalidad;
+        document.getElementById('pdfMontoPersonal').innerText = 'S/. ' + precioPersonal.toFixed(2);
+        document.getElementById('pdfMontoTopico').innerText = 'S/. ' + precioTopico.toFixed(2);
+        document.getElementById('pdfMontoTotal').innerText = 'S/. ' + precioTotalGeneral.toFixed(2);
+        document.getElementById('pdfDias').innerText = diasTexto;
+
+        // Configurar el enlace automático de correo electrónico
+        const asunto = encodeURIComponent('Propuesta Económica de Servicios SST — Pharmony');
+        const cuerpo = encodeURIComponent(`Estimado equipo de ${cliente},\n\nEs un gusto saludarlos. Adjunto a este medio hacemos llegar la propuesta económica revisada para la gestión integral de Salud Ocupacional en sus instalaciones.\n\nInversión Mensual Total: S/. ${precioTotalGeneral.toFixed(2)} (Sujeto a crédito a ${diasTexto} días).\n\nQuedamos atentos a sus comentarios para coordinar el inicio de actividades.\n\nAtentamente,\nEquipo Comercial\nPharmony Seguridad y Salud Laboral`);
+        document.getElementById('btnEmail').href = `mailto:?subject=${asunto}&body=${cuerpo}`;
+    }
+
+    function descargarPDF() {
+        const element = document.getElementById('propuesta-pdf');
+        const clienteNom = document.getElementById('cliente').value;
+        const opt = {
+            margin:       10,
+            filename:     `Propuesta_Pharmony_${clienteNom}.pdf`,
+            image:        { type: 'jpeg', quality: 0.98 },
+            html2canvas:  { scale: 2 },
+            jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        };
+        html2pdf().set(opt).from(element).save();
+    }
+
+    window.onload = calcularTodo;
+</script>
+
+</body>
+</html>
