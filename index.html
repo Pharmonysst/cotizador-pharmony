@@ -7,63 +7,68 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
 <body class="bg-slate-100 p-8">
-    <div class="max-w-5xl mx-auto bg-white p-8 rounded-xl shadow-lg">
-        <h1 class="text-3xl font-black text-slate-900 mb-6">PHARMONY OHI™ - Cotizador Inteligente</h1>
+    <div class="max-w-4xl mx-auto bg-white p-8 rounded-xl shadow-lg border border-slate-200">
+        <h1 class="text-2xl font-black text-slate-900 mb-6 border-b pb-4">PHARMONY OHI™ - Cotizador Inteligente</h1>
         
-        <!-- ENTRADA RÁPIDA DE PRESUPUESTO -->
-        <div class="bg-blue-50 p-6 rounded-xl border border-blue-200 mb-8">
-            <label class="block text-sm font-bold text-blue-800 mb-2">Entrada Rápida: Presupuesto Global Licitación (S/.)</label>
+        <!-- Entrada Rápida -->
+        <div class="bg-blue-50 p-6 rounded-xl border border-blue-200 mb-6">
+            <label class="block text-sm font-bold text-blue-800 mb-2">Entrada Rápida: Presupuesto Global (S/.)</label>
             <input type="number" id="global-budget" oninput="distributeBudget()" class="w-full p-3 rounded-lg border border-blue-300 font-bold" placeholder="Ej. 15000">
-            <p class="text-xs text-blue-500 mt-2 italic">*El sistema distribuirá este monto automáticamente manteniendo la transparencia de costos.</p>
         </div>
 
-        <!-- PROFESIONALES -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Inputs con Costos Reales (Grises) -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
             <div>
-                <label class="block text-xs font-bold text-slate-500 uppercase">Licenciado(a) en Enfermería Ocupacional (S/.)</label>
-                <input type="number" id="nurse-cost" class="w-full p-2 border rounded" oninput="calculateQuote()">
-                <span class="text-[10px] text-slate-400 block mt-1">(Costo Real Interno: S/. 2,900)</span>
+                <label class="text-xs font-bold text-slate-500 uppercase">Médico Ocupacional (S/.)</label>
+                <input type="number" id="med-cost" class="w-full p-2 border rounded" oninput="calculateInternal()">
+                <p class="text-[10px] text-slate-400 mt-1 italic">Costo Real: S/. 2,600</p>
             </div>
-            <!-- Otros campos similares... -->
-        </div>
-
-        <!-- CUADRO DE VALOR AGREGADO VERDE -->
-        <div class="mt-8 border-t pt-6">
-            <h3 class="font-bold text-lg mb-4">Servicios OHI™ Incluidos (Sin Costo)</h3>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="bg-emerald-50 p-4 border border-emerald-200 rounded-lg">
-                    <p class="text-emerald-800 font-bold">Consultoría Psicológica</p>
-                    <p class="text-emerald-600 text-sm">Incluido [Valor S/. 0.00]</p>
-                </div>
-                <div class="bg-emerald-50 p-4 border border-emerald-200 rounded-lg">
-                    <p class="text-emerald-800 font-bold">Campaña de Tamizaje (Glucosa, PA, Talla, Peso, IMC)</p>
-                    <p class="text-emerald-600 text-sm">Al 40% población: Incluido [Valor S/. 0.00]</p>
-                </div>
+            <div>
+                <label class="text-xs font-bold text-slate-500 uppercase">Lic. Enfermería Ocupacional (S/.)</label>
+                <input type="number" id="nurse-cost" class="w-full p-2 border rounded" oninput="calculateInternal()">
+                <p class="text-[10px] text-slate-400 mt-1 italic">Costo Real: S/. 2,900</p>
+            </div>
+            <div>
+                <label class="text-xs font-bold text-slate-500 uppercase">Ing. Seguridad / SST (S/.)</label>
+                <input type="number" id="eng-cost" class="w-full p-2 border rounded" oninput="calculateInternal()">
+                <p class="text-[10px] text-slate-400 mt-1 italic">Costo Real: S/. 5,200</p>
             </div>
         </div>
 
-        <button onclick="generatePDF()" class="mt-8 bg-slate-900 text-white w-full py-4 rounded-xl font-bold uppercase hover:bg-slate-800">Generar Propuesta Formal OHI™</button>
+        <!-- Ecosistema PHARMONY OHI -->
+        <div class="bg-slate-900 text-white p-6 rounded-xl mb-8">
+            <h3 class="font-bold mb-3 text-blue-400">Comité de Supervisión PHARMONY OHI™</h3>
+            <ul class="text-sm space-y-1">
+                <li>• <strong>Dr. Pedro Pereda:</strong> Dirección de Vigilancia Médica</li>
+                <li>• <strong>Ing. Billy Seminario:</strong> Jefatura de Ingeniería, Seguridad y Calidad</li>
+                <li>• <strong>Eduardo Sánchez:</strong> Jefatura de Gestión Ambiental</li>
+            </ul>
+        </div>
+
+        <!-- Valor Agregado Verde -->
+        <div class="grid grid-cols-2 gap-4 mb-8">
+            <div class="bg-emerald-50 p-4 border border-emerald-200 rounded-lg">
+                <p class="text-emerald-800 font-bold text-sm">Consultoría Psicológica</p>
+                <p class="text-emerald-600 text-xs font-semibold">INCLUIDO [S/. 0.00]</p>
+            </div>
+            <div class="bg-emerald-50 p-4 border border-emerald-200 rounded-lg">
+                <p class="text-emerald-800 font-bold text-sm">Campaña de Tamizaje (Glucosa, PA, Talla, Peso, IMC)</p>
+                <p class="text-emerald-600 text-xs font-semibold">40% Población: INCLUIDO [S/. 0.00]</p>
+            </div>
+        </div>
+
+        <button onclick="window.print()" class="w-full bg-blue-700 text-white py-4 rounded-xl font-bold uppercase hover:bg-blue-800">Generar Propuesta Formal OHI™</button>
     </div>
 
     <script>
         function distributeBudget() {
             const total = parseFloat(document.getElementById('global-budget').value) || 0;
-            // Lógica de distribución proporcional a los cargos de Pedro, Billy y Eduardo
-            // Ajustar automáticamente cada campo input
-            calculateQuote();
+            // Distribución proporcional básica (puedes ajustar los porcentajes aquí)
+            document.getElementById('med-cost').value = Math.round(total * 0.25);
+            document.getElementById('nurse-cost').value = Math.round(total * 0.30);
+            document.getElementById('eng-cost').value = Math.round(total * 0.45);
         }
-
-        function calculateQuote() {
-            // Lógica de cálculo...
-        }
-
-        function generatePDF() {
-            // El formato PDF incluirá ahora los roles de:
-            // Dr. Pedro Pereda (Vigilancia Médica)
-            // Ing. Billy Seminario (Seguridad y Calidad)
-            // Eduardo Sánchez (Gestión Ambiental)
-            alert("Generando propuesta corporativa PHARMONY OHI™...");
-        }
+        function calculateInternal() { /* Lógica de reporte interno */ }
     </script>
 </body>
 </html>
