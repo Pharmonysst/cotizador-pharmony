@@ -62,7 +62,7 @@
             <h2>1. Configuración de Cuenta & Riesgo</h2>
             <div class="form-group">
                 <label for="cliente">Razón Social del Cliente</label>
-                <input type="text" id="cliente" value="BRIGHTCELL LOGISTICS PERU S.A.C." oninput="calcularTodo()">
+                <input type="text" id="cliente" value="{{client_name}}" oninput="calcularTodo()">
             </div>
             <div class="sub-grid">
                 <div class="form-group">
@@ -72,7 +72,7 @@
                         <option value="Gas y Petróleo">Gas y Petróleo (Riesgo Crítico)</option>
                         <option value="Transporte de Personal">Transporte de Personal (Riesgo Crítico)</option>
                         <option value="Pesquero">Sector Pesquero (Riesgo Crítico)</option>
-                        <option value="Logística" selected>Logística / Almacenes (Riesgo Medio)</option>
+                        <option value="{{industry_sector}}" selected>{{industry_sector}} / Almacenes (Riesgo Medio)</option>
                         <option value="Alimentario">Sector Alimentario (Riesgo Medio)</option>
                         <option value="Entretenimiento">Entretenimiento / Hoteles (Riesgo Medio)</option>
                         <option value="Teletrabajo">Teletrabajo (Riesgo Mínimo)</option>
@@ -283,21 +283,21 @@
                 </td>
                 <td class="cabecera-titulo">
                     ESTIMACIÓN DE INVERSIÓN CORPORATIVA: SISTEMA INTEGRAL OHI™<br>
-                    <span style="font-size:0.75em; font-weight:normal; color:#4a5568;" id="pdfSubtitulo">Cliente: BRIGHTCELL LOGISTICS PERU S.A.C.</span>
+                    <span style="font-size:0.75em; font-weight:normal; color:#4a5568;" id="pdfSubtitulo">Cliente: {{client_name}}</span>
                 </td>
                 <td class="cabecera-meta">
                     <table class="subtabla-meta">
-                        <tr>
+                        
                             <td style="font-weight:bold; width:35%;">Código:</td>
-                            <td id="pdfCodigo" style="color:#0f2d59; font-weight:bold; font-size:0.85em;">COT-OHI-XXX-V2</td>
+                            <td id="pdfCodigo" style="color:#0f2d59; font-weight:bold; font-size:0.85em;">{{quotation_code}}</td>
                         </tr>
                         <tr>
                             <td style="font-weight:bold;">Versión:</td>
-                            <td id="pdfVersion" style="color:#0f2d59; font-weight:bold;">2</td>
+                            <td id="pdfVersion" style="color:#0f2d59; font-weight:bold;">{{version}}</td>
                         </tr>
                         <tr>
                             <td style="font-weight:bold;">Sector:</td>
-                            <td id="pdfSector" style="color:#4a5568;">Logística</td>
+                            <td id="pdfSector" style="color:#4a5568;">{{industry_sector}}</td>
                         </tr>
                     </table>
                 </td>
@@ -315,9 +315,11 @@
             <strong>👥 DIRECCIONAMIENTO TÉCNICO Y COMITÉ INTERDISCIPLINARIO HSEQ (SIG):</strong>
             <p style="margin: 3px 0 6px 0; font-size: 0.95em;">La operación cuenta con el respaldo, gobernanza y auditoría en tiempo real de nuestro comité de Jefaturas Especializadas:</p>
             <ul style="font-size:0.95em;">
-                <li>• <strong>Vigilancia Médica e Inteligencia de Salud (Health):</strong> Liderado por el <strong>Dr. Pedro Pereda</strong>[cite: 1, 2]. Gobierno avanzado de datos clínicos, inteligencia epidemiológica avanzada y blindaje corporativo ante auditorías regulatorias[cite: 1, 2].</li>
-                <li>• <strong>Ingeniería, Seguridad y Calidad Operativa (Safety & Quality):</strong> Liderado por **Ing. Billy Seminario** (Ingeniero de Minas Colegiado)[cite: 1]. Auditoría de procesos, fiscalización de matrices IPERC[cite: 1], control de riesgos críticos de campo y defensa técnica ante inspecciones de SUNAFIL[cite: 2].</li>
-                <li>• <strong>Gestión Ambiental y Bioseguridad (Environment):</strong> Liderado por **Eduardo Sánchez** (Especialista Senior SSOMA)[cite: 1, 2]. Aseguramiento normativo, planes de manejo de residuos biocontaminados y auditorías continuas de bioseguridad ambiental[cite: 1, 2].</li>
+               <li>• <strong>Vigilancia Médica e Inteligencia de Salud (Health):</strong> ...</li>
+{{#if include_safety}}
+<li>• <strong>Ingeniería, Seguridad y Calidad Operativa (Safety & Quality):</strong> Liderado por **Ing. Billy Seminario**...</li>
+{{/if}}
+<li>• <strong>Gestión Ambiental y Bioseguridad (Environment):</strong> ...</li>
             </ul>
         </div>
 
