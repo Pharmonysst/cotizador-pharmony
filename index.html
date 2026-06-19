@@ -3,250 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PHARMONY OHI™ — Occupational Health Cost Estimator</title>
+    <title>PHARMONY OHI™ — Master Enterprise Estimator</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f0f4f8;
-            color: #333;
-            margin: 0;
-            padding: 20px;
-            line-height: 1.35;
-        }
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            background: #ffffff;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-        }
-        h1 {
-            color: #0f2d59;
-            border-bottom: 3px solid #3182ce;
-            padding-bottom: 10px;
-            margin-top: 0;
-            font-size: 1.65em;
-            letter-spacing: 0.5px;
-        }
-        h2 {
-            color: #2b6cb0;
-            margin-top: 15px;
-            font-size: 1.1em;
-            border-bottom: 1px solid #e2e8f0;
-            padding-bottom: 5px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 20px;
-            margin-bottom: 20px;
-        }
-        .card {
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            padding: 20px;
-            border-radius: 6px;
-        }
-        .form-group {
-            margin-bottom: 12px;
-        }
-        .perfil-box {
-            background: #ffffff;
-            border: 1px solid #cbd5e0;
-            padding: 12px;
-            border-radius: 6px;
-            margin-bottom: 10px;
-        }
-        .perfil-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-weight: bold;
-            color: #1a202c;
-        }
-        .perfil-details {
-            margin-top: 8px;
-            display: none;
-            background: #f7fafc;
-            padding: 10px;
-            border-radius: 4px;
-            border-left: 3px solid #3182ce;
-        }
-        .sub-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-top: 5px;
-        }
-        label {
-            display: block;
-            font-weight: bold;
-            margin-bottom: 4px;
-            color: #4a5568;
-            font-size: 0.82em;
-        }
-        select, input[type="number"], input[type="text"] {
-            width: 100%;
-            padding: 7px;
-            border: 1px solid #cbd5e0;
-            border-radius: 4px;
-            box-sizing: border-box;
-            font-size: 0.88em;
-        }
-        .checkbox-group {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-top: 8px;
-        }
-        .checkbox-group label {
-            margin-bottom: 0;
-            cursor: pointer;
-            font-size: 0.88em;
-        }
+        body { font-family: 'Arial', sans-serif; background-color: #f0f4f8; color: #333; margin: 0; padding: 20px; line-height: 1.35; }
+        .container { max-width: 1300px; margin: 0 auto; background: #ffffff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
+        h1 { color: #0f2d59; border-bottom: 3px solid #3182ce; padding-bottom: 10px; margin-top: 0; font-size: 1.6em; letter-spacing: 0.5px; }
+        h2 { color: #2b6cb0; margin-top: 15px; font-size: 1.05em; border-bottom: 1px solid #e2e8f0; padding-bottom: 5px; text-transform: uppercase; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 20px; margin-bottom: 20px; }
+        .card { background: #f8fafc; border: 1px solid #e2e8f0; padding: 18px; border-radius: 6px; }
+        .form-group { margin-bottom: 10px; }
+        .perfil-box { background: #ffffff; border: 1px solid #cbd5e0; padding: 10px; border-radius: 6px; margin-bottom: 8px; }
+        .perfil-header { display: flex; align-items: center; gap: 10px; font-weight: bold; color: #1a202c; }
+        .perfil-details { margin-top: 6px; display: none; background: #f7fafc; padding: 8px; border-radius: 4px; border-left: 3px solid #3182ce; }
+        .sub-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 4px; }
+        label { display: block; font-weight: bold; margin-bottom: 3px; color: #4a5568; font-size: 0.8em; }
+        select, input[type="number"], input[type="text"] { width: 100%; padding: 6px; border: 1px solid #cbd5e0; border-radius: 4px; box-sizing: border-box; font-size: 0.85em; }
+        .checkbox-group { display: flex; align-items: center; gap: 8px; margin-top: 6px; }
+        .checkbox-group label { margin-bottom: 0; cursor: pointer; font-size: 0.85em; }
         
-        /* ALERTA LEGAL ROJA */
-        .banner-alerta-legal {
-            display: none;
-            background-color: #fff5f5;
-            border: 2px solid #e53e3e;
-            color: #c53030;
-            padding: 15px;
-            border-radius: 6px;
-            margin-top: 20px;
-            margin-bottom: 15px;
-            font-size: 0.88em;
-            line-height: 1.4;
-        }
+        .banner-alerta-legal { display: none; background-color: #fff5f5; border: 2px solid #e53e3e; color: #c53030; padding: 12px; border-radius: 6px; margin-top: 15px; font-size: 0.85em; }
         
-        /* DISEÑO DE PROFORMA INSTITUCIONAL OHI™ */
-        #propuesta-pdf {
-            background: white;
-            padding: 50px;
-            border: 1px solid #cbd5e0;
-            margin-top: 30px;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
-        .tabla-cabecera {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 25px;
-        }
-        .tabla-cabecera td {
-            border: 1px solid #0f2d59;
-            padding: 12px;
-            vertical-align: middle;
-        }
-        .cabecera-logo {
-            width: 28%;
-            text-align: center;
-            font-weight: bold;
-            font-size: 1.35em;
-            color: #0f2d59;
-            letter-spacing: 1.5px;
-            line-height: 1.1;
-        }
-        .cabecera-titulo {
-            width: 47%;
-            text-align: center;
-            font-weight: bold;
-            color: #0f2d59;
-            font-size: 1.05em;
-            letter-spacing: 0.3px;
-        }
-        .cabecera-meta {
-            width: 25%;
-            font-size: 0.78em;
-            padding: 0 !important;
-        }
-        .subtabla-meta {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        .subtabla-meta td {
-            border: none !important;
-            border-bottom: 1px solid #0f2d59 !important;
-            padding: 5px 8px !important;
-        }
-        .subtabla-meta tr:last-child td {
-            border-bottom: none !important;
-        }
+        /* MAQUETACIÓN PDF */
+        #propuesta-pdf { background: white; padding: 35px; border: 1px solid #cbd5e0; margin-top: 25px; border-radius: 4px; box-sizing: border-box; }
+        .tabla-cabecera { width: 100%; border-collapse: collapse; margin-bottom: 15px; table-layout: fixed; }
+        .tabla-cabecera td { border: 1px solid #0f2d59; padding: 8px; vertical-align: middle; }
+        .cabecera-logo { width: 25%; text-align: center; font-weight: bold; font-size: 1.15em; color: #0f2d59; letter-spacing: 1px; }
+        .cabecera-titulo { width: 45%; text-align: center; font-weight: bold; color: #0f2d59; font-size: 0.9em; line-height: 1.3; }
+        .cabecera-meta { width: 30%; font-size: 0.75em; padding: 0 !important; }
+        .subtabla-meta { width: 100%; border-collapse: collapse; }
+        .subtabla-meta td { border: none !important; border-bottom: 1px solid #0f2d59 !important; padding: 5px !important; font-size: 0.9em; }
+        .subtabla-meta tr:last-child td { border-bottom: none !important; }
         
-        table.tabla-costos {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 15px;
-            margin-bottom: 20px;
-            font-size: 0.82em;
-        }
-        table.tabla-costos th, table.tabla-costos td {
-            border: 1px solid #cbd5e0;
-            padding: 8px 10px;
-            text-align: left;
-        }
-        table.tabla-costos th {
-            background-color: #0f2d59;
-            color: white;
-            text-transform: uppercase;
-            font-size: 0.85em;
-            letter-spacing: 0.5px;
-        }
+        table.tabla-costos { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 0.8em; }
+        table.tabla-costos th, table.tabla-costos td { border: 1px solid #cbd5e0; padding: 7px 9px; text-align: left; }
+        table.tabla-costos th { background-color: #0f2d59; color: white; text-transform: uppercase; font-size: 0.82em; }
         
-        .box-seccion {
-            background-color: #f8fafc;
-            border: 1px solid #e2e8f0;
-            padding: 15px;
-            margin-top: 15px;
-            border-radius: 4px;
-            font-size: 0.82em;
-        }
-        .box-seccion strong {
-            color: #0f2d59;
-        }
-        .box-seccion ul {
-            margin: 6px 0 0 18px;
-            padding: 0;
-        }
-        .box-seccion li {
-            margin-bottom: 4px;
-        }
+        .box-seccion { background-color: #f8fafc; border: 1px solid #e2e8f0; padding: 12px; margin-top: 12px; border-radius: 4px; font-size: 0.8em; clear: both; }
+        .box-seccion strong { color: #0f2d59; }
+        .box-seccion ul { margin: 5px 0 0 0; padding: 0; list-style: none; }
+        .box-seccion li { margin-bottom: 5px; line-height: 1.35; }
 
-        .sistema-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px;
-            margin-top: 8px;
-        }
-        .sistema-item {
-            background: #ffffff;
-            border: 1px dashed #cbd5e0;
-            padding: 6px 10px;
-            border-radius: 4px;
-            font-weight: bold;
-            color: #2d3748;
-        }
-
-        .actions-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-top: 25px;
-        }
-        .btn {
-            padding: 14px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 1em;
-            font-weight: bold;
-            text-align: center;
-            text-decoration: none;
-        }
+        .actions-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
+        .btn { padding: 12px; border: none; border-radius: 4px; cursor: pointer; font-size: 0.95em; font-weight: bold; text-align: center; text-decoration: none; }
         .btn-pdf { background-color: #e53e3e; color: white; }
         .btn-email { background-color: #0f2d59; color: white; }
         .btn:hover { opacity: 0.9; }
@@ -255,178 +54,232 @@
 <body>
 
 <div class="container">
-    <h1 style="display: flex; justify-content: space-between; align-items: center;">
-        <span>PHARMONY OHI™ — Occupational Health Cost Estimator</span>
-        <span style="font-size: 0.5em; color: #718096; font-weight: normal;">Firma Consultora SST</span>
-    </h1>
+    <h1>PHARmonysst Control Panel — Ecosistema OHI™ Master v2.7</h1>
     
     <div class="grid">
+        <!-- BLOQUE 1: PARAMETRIZACIÓN DEL CLIENTE -->
         <div class="card">
-            <h2>1. Entorno del Cliente</h2>
+            <h2>1. Configuración de Cuenta & Riesgo</h2>
             <div class="form-group">
                 <label for="cliente">Razón Social del Cliente</label>
                 <input type="text" id="cliente" value="BRIGHTCELL LOGISTICS PERU S.A.C." oninput="calcularTodo()">
             </div>
             <div class="sub-grid">
                 <div class="form-group">
-                    <label for="sector">Sector Operativo</label>
+                    <label for="sector">Sector Corporativo (Matriz de Riesgo)</label>
                     <select id="sector" onchange="calcularTodo()">
-                        <option value="Logística" selected>Logística / Transportes</option>
-                        <option value="Minería">Minería / Extractivo</option>
-                        <option value="Industria">Industria / Manufactura</option>
-                        <option value="Construcción">Construcción Civil</option>
-                        <option value="Oficinas">Oficinas Administrativas</option>
+                        <option value="Minería">Minería (Riesgo Crítico)</option>
+                        <option value="Gas y Petróleo">Gas y Petróleo / Repsol (Riesgo Crítico)</option>
+                        <option value="Transporte Personal">Transporte de Personal / Civa / Línea (Riesgo Crítico)</option>
+                        <option value="Pesquero">Sector Pesquero (Riesgo Crítico)</option>
+                        <option value="Logística" selected>Logística / Almacenes (Riesgo Medio)</option>
+                        <option value="Alimentario">Sector Alimentario (Riesgo Medio)</option>
+                        <option value="Entretenimiento">Entretenimiento / Hoteles (Riesgo Medio)</option>
+                        <option value="Teletrabajo">Teletrabajo Puro (Riesgo Mínimo / Descuento)</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="sedes">N.° de Sedes a Cubrir</label>
-                    <input type="number" id="sedes" value="1" min="1" oninput="calcularTodo()">
-                </div>
-            </div>
-            <div class="sub-grid">
-                <div class="form-group">
-                    <label for="trabajadores">N.° Total Trabajadores</label>
-                    <input type="number" id="trabajadores" value="550" min="1" oninput="calcularTodo()">
-                </div>
-                <div class="form-group">
-                    <label for="version">Versión Estimación</label>
+                    <label for="version">Versión Comercial</label>
                     <select id="version" onchange="calcularTodo()">
                         <option value="1">Versión 1</option>
                         <option value="2" selected>Versión 2 (OHI™)</option>
                         <option value="3">Versión 3</option>
+                        <option value="4">Versión 4</option>
+                        <option value="5">Versión 5</option>
                     </select>
                 </div>
             </div>
-            <div class="form-group">
-                <label for="credito">Plazo Comercial de Pago</label>
-                <select id="credito" onchange="calcularTodo()">
-                    <option value="1.000">30 días netos</option>
-                    <option value="1.0075">45 días (+0.75%)</option>
-                    <option value="1.015">60 días (+1.50%)</option>
-                    <option value="1.030">90 días (+3.00%)</option>
-                </select>
+            <div class="sub-grid">
+                <div class="form-group">
+                    <label for="sedes">N.° Sedes Totales</label>
+                    <input type="number" id="sedes" value="1" min="1" oninput="calcularTodo()">
+                </div>
+                <div class="form-group">
+                    <label for="sedes_topico">Sedes que Requieren Tópico Fijo</label>
+                    <input type="number" id="sedes_topico" value="1" min="0" oninput="calcularTodo()">
+                </div>
+            </div>
+            <div class="sub-grid">
+                <div class="form-group">
+                    <label for="trabajadores">N.° Total Colaboradores</label>
+                    <input type="number" id="trabajadores" value="550" min="1" oninput="calcularTodo()">
+                </div>
+                <div class="form-group">
+                    <label for="credito">Términos de Pago</label>
+                    <select id="credito" onchange="calcularTodo()">
+                        <option value="1.000">30 días netos</option>
+                        <option value="1.0075">45 días (+0.75%)</option>
+                        <option value="1.015">60 días (+1.50%)</option>
+                    </select>
+                </div>
             </div>
         </div>
 
+        <!-- BLOQUE 2: ESTRUCTURA MÉDICA & SALUD (COBERTURA VARIABLE) -->
         <div class="card">
-            <h2>2. Cobertura Asistencial Personalizada</h2>
+            <h2>2. Profesionales de la Salud & Bienestar (Por Día/Semana)</h2>
             
             <div class="perfil-box">
                 <div class="perfil-header">
                     <input type="checkbox" id="chk_medico" checked onchange="togglePerfil('medico')">
-                    <label for="chk_medico">Médico Ocupacional (Diplomado)</label>
+                    <label for="chk_medico">Médico Ocupacional</label>
                 </div>
                 <div id="group_medico" class="perfil-details" style="display: block;">
                     <div class="sub-grid">
                         <div>
-                            <label>Sueldo Base Full (S/.)</label>
-                            <input type="number" id="sueldo_medico" value="4200" oninput="calcularTodo()">
+                            <label>Inversión por Día/Semana (Min S/.1800)</label>
+                            <input type="number" id="sueldo_medico" value="1800" min="1800" oninput="calcularTodo()">
                         </div>
                         <div>
-                            <label>Modalidad</label>
-                            <select id="mod_medico" onchange="calcularTodo()">
-                                <option value="presencial" selected>Presencial In Situ</option>
-                                <option value="remoto">Remoto / Gestión</option>
-                            </select>
+                            <label>Días/Semana</label>
+                            <input type="number" id="dias_medico" value="2" min="1" max="6" oninput="calcularTodo()">
                         </div>
-                    </div>
-                    <div class="form-group" style="margin-top: 5px;">
-                        <label for="dias_medico">Días de Cobertura a la Semana</label>
-                        <input type="number" id="dias_medico" value="2" min="1" max="6" oninput="calcularTodo()">
                     </div>
                 </div>
             </div>
 
             <div class="perfil-box">
                 <div class="perfil-header">
-                    <input type="checkbox" id="chk_enferm_esp" onchange="togglePerfil('enferm_esp')">
-                    <label for="chk_enferm_esp">Enfermería Universitaria (Especialidad)</label>
+                    <input type="checkbox" id="chk_enferm_esp" checked onchange="togglePerfil('enferm_esp')">
+                    <label for="chk_enferm_esp">Enfermero(a) Universitario Ocupacional</label>
                 </div>
-                <div id="group_enferm_esp" class="perfil-details">
+                <div id="group_enferm_esp" class="perfil-details" style="display: block;">
                     <div class="sub-grid">
                         <div>
-                            <label>Sueldo Base Full</label>
-                            <input type="number" id="sueldo_enferm_esp" value="2700" oninput="calcularTodo()">
+                            <label>Inversión por Día/Semana (Min S/.1100)</label>
+                            <input type="number" id="sueldo_enferm_esp" value="1100" min="1100" oninput="calcularTodo()">
                         </div>
                         <div>
-                            <label>Modalidad</label>
-                            <select id="mod_enferm_esp" onchange="calcularTodo()">
-                                <option value="presencial">Presencial In Situ</option>
-                                <option value="remoto">Remoto / Gestión</option>
-                            </select>
+                            <label>Días/Semana</label>
+                            <input type="number" id="dias_enferm_esp" value="1" min="1" max="6" oninput="calcularTodo()">
                         </div>
-                    </div>
-                    <div class="form-group" style="margin-top: 5px;">
-                        <label for="dias_enferm_esp">Días a la Semana</label>
-                        <input type="number" id="dias_enferm_esp" value="5" min="1" max="6" oninput="calcularTodo()">
                     </div>
                 </div>
             </div>
 
             <div class="perfil-box">
                 <div class="perfil-header">
-                    <input type="checkbox" id="chk_enferm_base" onchange="togglePerfil('enferm_base')">
-                    <label for="chk_enferm_base">Técnico de Enfermería Asistencial</label>
+                    <input type="checkbox" id="chk_enferm_asist" onchange="togglePerfil('enferm_asist')">
+                    <label for="chk_enferm_asist">Enfermero(a) Asistencial (Tópico / Emergencias)</label>
                 </div>
-                <div id="group_enferm_base" class="perfil-details">
+                <div id="group_enferm_asist" class="perfil-details">
                     <div class="sub-grid">
                         <div>
-                            <label>Sueldo Base Full</label>
-                            <input type="number" id="sueldo_enferm_base" value="2200" oninput="calcularTodo()">
+                            <label>Inversión por Día/Semana (Min S/.850)</label>
+                            <input type="number" id="sueldo_enferm_asist" value="850" min="850" oninput="calcularTodo()">
                         </div>
                         <div>
-                            <label>Modalidad</label>
-                            <select id="mod_enferm_base" onchange="calcularTodo()">
-                                <option value="presencial">Presencial In Situ</option>
-                                <option value="remoto">Remoto</option>
-                            </select>
+                            <label>Días/Semana</label>
+                            <input type="number" id="dias_enferm_asist" value="6" min="1" max="6" oninput="calcularTodo()">
                         </div>
                     </div>
-                    <div class="form-group" style="margin-top: 5px;">
-                        <label for="dias_enferm_base">Días a la Semana</label>
-                        <input type="number" id="dias_enferm_base" value="6" min="1" max="6" oninput="calcularTodo()">
+                </div>
+            </div>
+
+            <div class="perfil-box">
+                <div class="perfil-header">
+                    <input type="checkbox" id="chk_bienestar" onchange="togglePerfil('bienestar')">
+                    <label for="chk_bienestar">Especialista en Bienestar Social / Trabajadora Social</label>
+                </div>
+                <div id="group_bienestar" class="perfil-details">
+                    <div class="sub-grid">
+                        <div>
+                            <label>Inversión Base Mensual Completa</label>
+                            <input type="number" id="sueldo_bienestar" value="4500" min="4500" oninput="calcularTodo()">
+                        </div>
+                        <div>
+                            <label>Días/Semana (Se prorratea de 5 días)</label>
+                            <input type="number" id="dias_bienestar" value="1" min="1" max="5" oninput="calcularTodo()">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="perfil-box">
+                <div class="perfil-header">
+                    <input type="checkbox" id="chk_psico" onchange="togglePerfil('psico')">
+                    <label for="chk_psico">Psicología Ocupacional (Flexible)</label>
+                </div>
+                <div id="group_psico" class="perfil-details">
+                    <div class="sub-grid">
+                        <div>
+                            <label>Tipo de Gestión</label>
+                            <select id="tipo_psico" onchange="calcularTodo()">
+                                <option value="jornada">Por Jornada Completa (S/. 120)</option>
+                                <option value="horas">Por Horas Abiertas (S/. 15 / hr)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label id="lbl_cant_psico">Cantidad (Jornadas o Horas)</label>
+                            <input type="number" id="cant_psico" value="1" min="1" oninput="calcularTodo()">
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
+        <!-- BLOQUE 3: ESTRUCTURA DE INGENIERÍA SSOMA & SIG (TARIFA FIJA MENSUAL) -->
         <div class="card">
-            <h2>3. Módulos OHI™ e Inteligencia Operativa</h2>
+            <h2>3. Ecosistema de Ingeniería SSOMA & SIG (Asignación Mensual Fija)</h2>
+            <p style="font-size:0.75em; color:#718096; margin-top:-5px; margin-bottom:10px;">Estructuras de personal técnico senior cotizados bajo tarifa plana mensual corporativa:</p>
+            
+            <div class="checkbox-group" style="margin-bottom: 6px;">
+                <input type="checkbox" id="chk_ing_soma" onchange="calcularTodo()">
+                <label for="chk_ing_soma"><strong>Ingeniero / Supervisor SSOMA Colegiado</strong> (S/. 7,500/mes)</label>
+            </div>
+
+            <div class="checkbox-group" style="margin-bottom: 6px;">
+                <input type="checkbox" id="chk_asist_soma" onchange="calcularTodo()">
+                <label for="chk_asist_soma"><strong>Asistente SSOMA In Situ (Bachiller)</strong> (S/. 3,800/mes)</label>
+            </div>
+
+            <div class="checkbox-group" style="margin-bottom: 6px;">
+                <input type="checkbox" id="chk_sig" onchange="calcularTodo()">
+                <label for="chk_sig"><strong>Consultor SIG / Ingeniero Ambiental</strong> (S/. 5,000/mes)</label>
+            </div>
+
+            <div class="checkbox-group" style="margin-bottom: 6px;">
+                <input type="checkbox" id="chk_geologo" onchange="calcularTodo()">
+                <label for="chk_geologo"><strong>Geólogo de Seguridad y Geotecnia</strong> (S/. 11,500/mes)</label>
+            </div>
+        </div>
+
+        <!-- BLOQUE 4: ADICIONALES Y CAPACITACIONES -->
+        <div class="card">
+            <h2>4. Capacitaciones Extras & Módulos Logísticos</h2>
             <div class="form-group">
-                <label for="jornadasPsico" style="color: #2b6cb0;">N.° de Jornadas Extras de Psicología al Mes</label>
-                <input type="number" id="jornadasPsico" value="0" min="0" oninput="calcularTodo()" style="border: 1px solid #2b6cb0; font-weight: bold;">
-                <span style="font-size: 0.75em; color: #718096;">* Cada jornada de intervención añade S/. 120 al costo variable.</span>
+                <label>Capacitaciones Virtuales Adicionales (S/. 160 x Hora)</label>
+                <input type="number" id="cap_horas" value="0" min="0" oninput="calcularTodo()">
             </div>
             <div class="checkbox-group">
-                <input type="checkbox" id="incluyeTopico" checked onchange="calcularTodo()">
-                <label for="incluyeTopico"><strong>Tópico Médico Fijo Implementado</strong></label>
+                <input type="checkbox" id="cap_cert_ind" onchange="calcularTodo()">
+                <label for="cap_cert_ind">Emitir Certificados Individuales (S/. 0.30 por colaborador)</label>
             </div>
+            <hr style="border:0; border-top:1px solid #e2e8f0; margin:10px 0;">
             <div class="checkbox-group">
                 <input type="checkbox" id="residuos" checked onchange="calcularTodo()">
-                <label for="residuos">Gestión Técnica de Residuos Biocontaminados</label>
+                <label for="residuos">Gestión Técnica de Residuos Biocontaminados (S/. 200 base)</label>
             </div>
             <div class="checkbox-group">
-                <input type="checkbox" id="atencion247" onchange="collapseCheckAlerta(); calcularTodo();">
-                <label for="atencion247">Soporte y Alerta Médica Remota 24/7</label>
-            </div>
-            <div class="checkbox-group">
-                <input type="checkbox" id="tamizaje100" onchange="calcularTodo()">
-                <label for="tamizaje100">Ampliar Tamizaje de Glucosa Preventivo al 100%</label>
+                <input type="checkbox" id="fee_transporte" checked onchange="calcularTodo()">
+                <label for="fee_transporte">Incluir Fee de Transporte y Despliegue de Materiales</label>
             </div>
         </div>
     </div>
 
+    <!-- BANNER ROJO SUNAFIL -->
     <div id="alertaLegalMinsa" class="banner-alerta-legal">
-        <strong>⚠️ ALERTA DE INCUMPLIMIENTO NORMATIVO (R.M. 312-2011-MINSA / R.M. 571-2014-MINSA):</strong><br>
-        Su organización registra <span id="alertTrabajadores">0</span> colaboradores. La legislación peruana estipula que toda empresa con <strong>500 o más trabajadores</strong> tiene la obligación estricta de contar con la permanencia de un Médico Ocupacional por un mínimo de <strong>5 días a la semana (6 horas diarias / 30 horas semanales) en modalidad Presencial</strong>. La configuración actual seleccionada no cumple con la cuota mínima de ley, exponiendo a la empresa a graves sanciones punitivas por parte de SUNAFIL.
+        <strong>⚠️ ALERTA DE INCUMPLIMIENTO NORMATIVO (R.M. 312-2011-MINSA):</strong><br>
+        Su organización registra <span id="alertTrabajadores">0</span> colaboradores. La legislación peruana estipula que toda empresa con <strong>500 o más trabajadores</strong> tiene la obligación de contar con un Médico Ocupacional por un mínimo de <strong>5 días a la semana de forma Presencial</strong>. Su configuración actual expone a la empresa a severas multas ante SUNAFIL.
     </div>
 
+    <!-- DOCUMENTO PDF GENERADO -->
     <div id="propuesta-pdf">
         <table class="tabla-cabecera">
             <tr>
                 <td class="cabecera-logo">
                     PHARMONY OHI™<br>
-                    <span style="font-size:0.32em; display:block; font-weight:normal; color:#4a5568; margin-top:4px;">OCCUPATIONAL HEALTH INTELLIGENCE</span>
+                    <span style="font-size:0.32em; display:block; font-weight:normal; color:#4a5568; margin-top:1px;">OCCUPATIONAL HEALTH INTELLIGENCE</span>
                 </td>
                 <td class="cabecera-titulo">
                     ESTIMACIÓN DE INVERSIÓN CORPORATIVA: SISTEMA INTEGRAL OHI™<br>
@@ -435,8 +288,8 @@
                 <td class="cabecera-meta">
                     <table class="subtabla-meta">
                         <tr>
-                            <td style="font-weight:bold; width:45%;">Código:</td>
-                            <td id="pdfCodigo" style="color:#0f2d59; font-weight:bold;">COT-OHI-XXXXXXXX-V2</td>
+                            <td style="font-weight:bold; width:35%;">Código:</td>
+                            <td id="pdfCodigo" style="color:#0f2d59; font-weight:bold; font-size:0.85em;">COT-OHI-XXX-V2</td>
                         </tr>
                         <tr>
                             <td style="font-weight:bold;">Versión:</td>
@@ -451,67 +304,58 @@
             </tr>
         </table>
         
-        <p style="font-size: 0.9em;"><strong>PHARMONY SERVICIOS DE SEGURIDAD, SALUD Y MEDIO AMBIENTE E.I.R.L.</strong> (RUC: 20614205351), presenta los términos de inversión económica para el despliegue de nuestra plataforma operativa y de inteligencia médica bajo los lineamientos globales de salud ocupacional y la Ley N.° 29783:</p>
+        <p style="font-size: 0.82em; margin: 8px 0;"><strong>PHARMONY SERVICIOS DE SEGURIDAD, SALUD Y MEDIO AMBIENTE E.I.R.L.</strong> (RUC: 20614205351), presenta los términos de inversión económica para el despliegue del Sistema Integrado de Gestión bajo la Ley N.° 29783:</p>
         
-        <div style="background-color: #0f2d59; color: white; padding: 12px 20px; border-radius: 4px; font-style: italic; font-size: 0.9em; text-align: center; margin-bottom: 15px; font-weight: bold;">
+        <div style="background-color: #0f2d59; color: white; padding: 8px; border-radius: 4px; font-style: italic; font-size: 0.82em; text-align: center; margin-bottom: 12px; font-weight: bold;">
             "Su organización no está comprando horas médicas aisladas; está integrando un sistema tecnológico y profesional de inteligencia de salud para proteger la continuidad de su operación."
         </div>
 
-        <div class="box-seccion" style="background-color: #f8fafc; border-left: 4px solid #0f2d59;">
-            <strong>👥 DIRECCIONAMIENTO TÉCNICO Y SUPERVISIÓN DE OPERACIONES:</strong>
-            <p style="margin: 4px 0 6px 0; line-height: 1.3;">El personal destacado en sus sedes ( <span id="pdfSedesTexto">1</span> ) cuenta con el soporte, dirección y auditoría en tiempo real de nuestro comité de Jefaturas:</p>
-            <ul style="list-style-type: square; margin-left: 15px;">
-                <li><strong>Dirección de Vigilancia Médica y OHI™:</strong> Liderado por el <strong>Dr. Pedro Pereda</strong> (Jefe de Operaciones de Salud Ocupacional).</li>
-                <li><strong>Jefatura de Seguridad Técnica e Ingeniería:</strong> Liderado por el <strong>Ing. Billy Seminario</strong> (Ingeniero de Minas).</li>
-                <li><strong>Jefatura de Gestión Ambiental y SSOMA:</strong> Liderado por <strong>Eduardo Sánchez</strong> (Especialista SSOMA).</li>
+        <!-- JEFATURAS REESTRUCTURADAS -->
+        <div class="box-seccion" style="border-left: 4px solid #0f2d59;">
+            <strong>👥 DIRECCIONAMIENTO TÉCNICO Y COMITÉ INTERDISCIPLINARIO HSEQ (SIG):</strong>
+            <p style="margin: 3px 0 6px 0; font-size: 0.95em;">La operación cuenta con el respaldo, gobernanza y auditoría en tiempo real de nuestro comité de Jefaturas Especializadas:</p>
+            <ul style="font-size:0.95em;">
+                <li>• <strong>Vigilancia Médica e Inteligencia de Salud (Health):</strong> Liderado por el <strong>Dr. Pedro Pereda</strong>[cite: 1, 2]. Gobierno avanzado de datos clínicos, inteligencia epidemiológica avanzada y blindaje corporativo ante auditorías regulatorias[cite: 1, 2].</li>
+                <li>• <strong>Ingeniería, Seguridad y Calidad Operativa (Safety & Quality):</strong> Liderado por **Ing. Billy Seminario** (Ingeniero de Minas Colegiado)[cite: 1]. Auditoría de procesos, fiscalización de matrices IPERC[cite: 1], control de riesgos críticos de campo y defensa técnica ante inspecciones de SUNAFIL[cite: 2].</li>
+                <li>• <strong>Gestión Ambiental y Bioseguridad (Environment):</strong> Liderado por **Eduardo Sánchez** (Especialista Senior SSOMA)[cite: 1, 2]. Aseguramiento normativo, planes de manejo de residuos biocontaminados y auditorías continuas de bioseguridad ambiental[cite: 1, 2].</li>
             </ul>
         </div>
 
-        <div class="box-seccion" style="background-color: #f7fafc; border: 1px solid #cbd5e0;">
-            <strong>⚙️ COMPONENTES DE INTELIGENCIA INCLUIDOS EN EL SERVICIO (SISTEMA OHI™):</strong>
-            <div class="sistema-grid">
-                <div class="sistema-item">✓ Executive Health Dashboard</div>
-                <div class="sistema-item">✓ Libro I – Gestión Médica Ocupacional</div>
-                <div class="sistema-item">✓ Inteligencia Epidemiológica Avanzada</div>
-                <div class="sistema-item">✓ Indicadores de Productividad Protegida</div>
-                <div class="sistema-item">✓ Planes de Acción Mensual Estructurados</div>
-                <div class="sistema-item">✓ Seguimiento Técnico de Restricciones Laborales</div>
-            </div>
+        <!-- BENEFICIO GRATUITO EXCLUSIVO -->
+        <div class="box-seccion" style="border-left: 4px solid #38a169; background-color: #f0fff4;">
+            <strong style="color: #276749;">🎁 BENEFICIO EXCLUSIVO CORPORATE (PLUS PHARMONY):</strong>
+            <p style="margin: 3px 0 0 0; color: #276749;">Pharmony otorga de manera **100% gratuita 2 capacitaciones anuales in situ** para el cumplimiento normativo estricto ante SUNAFIL[cite: 2]. Los temas serán dictados por nuestro equipo especializado (Médico Ocupacional, Psicóloga Ocupacional o Nutricionista Ocupacional) alineados de forma exacta a la casuística e intereses de su organización[cite: 2].</p>
         </div>
 
+        <!-- TABLA DE COSTOS TRANSPARENTE -->
         <table class="tabla-costos">
             <thead>
                 <tr>
-                    <th style="width: 12%; text-align: center;">CÓD. ÍTEM</th>
-                    <th style="width: 53%;">DESCRIPCIÓN DE LA COBERTURA DE SALUD INTELIGENTE</th>
-                    <th style="width: 15%; text-align: center;">MODALIDAD / FREC.</th>
+                    <th style="width: 15%; text-align: center;">CÓD. ÍTEM</th>
+                    <th style="width: 50%;">DESCRIPCIÓN DE LA COBERTURA DE SALUD E INGENIERÍA INTELIGENTE</th>
+                    <th style="width: 15%; text-align: center;">MODALIDAD</th>
                     <th style="width: 20%; text-align: right;">INVERSIÓN NETO</th>
                 </tr>
             </thead>
             <tbody id="cuerpoTablaCostos">
-                </tbody>
+                <!-- Inyección Dinámica por Script -->
+            </tbody>
         </table>
 
-        <div class="box-seccion">
-            <strong>⚖️ COMPROMISO LEGAL Y RESPONSABILIDAD CORPORATIVA:</strong>
-            <p style="margin: 4px 0 0 0; line-height: 1.4;">Pharmony SST asume el blindaje completo de la empresa usuaria frente a fiscalizaciones y auditorías sectoriales:</p>
-            <ul style="margin-left: 15px;">
-                <li><strong>Ley N.° 29783 y R.M. 312-2011-MINSA:</strong> Ejecución integral del plan anual y control estricto de aptitudes EMO.</li>
-                <li><strong>R.M. 021-2016-MINSA:</strong> Custodia hermética de Historias Clínicas y Libro de Atenciones de Tópico.</li>
-                <li><strong>Garantía SCTR de Cobertura Total:</strong> Todo el personal de Pharmony opera con SCTR activa desde el día cero, eliminando la responsabilidad solidaria o penal del cliente ante accidentes.</li>
-            </ul>
+        <!-- INSTRUCCIÓN DE ACEPTACIÓN COMERCIAL -->
+        <div class="box-seccion" style="background-color: #edf2f7; border: 1px solid #cbd5e0; margin-top: 15px;">
+            <strong>📩 INSTRUCCIONES DE ACTIVACIÓN DEL SERVICIO:</strong>
+            <p style="margin: 4px 0 0 0; line-height: 1.4;">De encontrarse conforme con los términos de inversión expuestos para el despliegue del Ecosistema OHI™, agradeceremos formalizar la atención mediante el envío de su **Orden de Servicio (OS), Orden de Compra (OC) o la presente propuesta firmada** al área central de contrataciones:<br>
+            📧 Correo Central: <strong>comercialperu@pharmonysst.com</strong> | 📱 Coordinación Comercial: <strong>919746268</strong></p>
         </div>
 
-        <p style="margin-top:20px; font-size: 0.78em; color: #4a5568; line-height: 1.4;">
-            <strong>Condiciones Financieras de la Proforma:</strong><br>
-            • Los valores económicos están cotizados en Soles (S/.) y no incluyen el Impuesto General a las Ventas (IGV).<br>
-            • Estructura Comercial: Crédito corporativo aprobado a <span id="pdfDias">30</span> días netos tras conformidad de servicio.<br>
-            • Vigencia de la oferta comercial OHI™: 30 días calendario a partir del presente mes de Junio 2026.
+        <p style="margin-top:12px; font-size: 0.72em; color: #4a5568; line-height: 1.3;">
+            <strong>Condiciones Financieras:</strong> Precios expresados en Soles (S/.) netos sin IGV. Crédito aprobado a <span id="pdfDias">30</span> días netos previa conformidad del periodo mensual. Vigencia comercial de la proforma: 30 días calendarios.
         </p>
     </div>
 
     <div class="actions-grid">
-        <button class="btn btn-pdf" onclick="descargarPDF()">📥 Descargar Archivo PHARMONY OHI™ (PDF)</button>
+        <button class="btn btn-pdf" onclick="descargarPDF()">📥 Descargar Propuesta Comercial Master (PDF)</button>
         <a id="btnEmail" class="btn btn-email" href="#">✉️ Notificar por Correo Institucional</a>
     </div>
 </div>
@@ -520,163 +364,222 @@
     function togglePerfil(id) {
         const checkbox = document.getElementById(`chk_${id}`);
         const group = document.getElementById(`group_${id}`);
-        group.style.display = checkbox.checked ? 'block' : 'none';
+        if(group) group.style.display = checkbox.checked ? 'block' : 'none';
         calcularTodo();
-    }
-
-    function collapseCheckAlerta() {
-        // Ejecución puente opcional
     }
 
     function calcularTodo() {
         const cliente = document.getElementById('cliente').value || "CLIENTE POR DESIGNAR";
         const sector = document.getElementById('sector').value;
         const sedes = parseInt(document.getElementById('sedes').value) || 1;
+        const sedesTopico = parseInt(document.getElementById('sedes_topico').value) || 0;
         const totalTrabajadores = parseInt(document.getElementById('trabajadores').value) || 1;
         const factorCredito = parseFloat(document.getElementById('credito').value);
         const versionSelec = document.getElementById('version').value;
         
-        const jornadasPsico = parseInt(document.getElementById('jornadasPsico').value) || 0;
-        const incluyeTopico = document.getElementById('incluyeTopico').checked;
-        const gestionaResiduos = document.getElementById('residuos').checked;
-        const atencion247 = document.getElementById('atencion247').checked;
-        const tamizajeAmpliado = document.getElementById('tamizaje100').checked;
-
-        // VALIDADOR LEGAL DE BRÚJULA MINSA (ALERTA ROJA)
+        // Alerta SUNAFIL
         const bannerAlerta = document.getElementById('alertaLegalMinsa');
         const chkMedico = document.getElementById('chk_medico').checked;
         const diasMedico = parseInt(document.getElementById('dias_medico').value) || 0;
-        const modMedico = document.getElementById('mod_medico').value;
-
-        if (totalTrabajadores >= 500 && (!chkMedico || diasMedico < 5 || modMedico === 'remoto')) {
+        if (totalTrabajadores >= 500 && (!chkMedico || diasMedico < 5)) {
             bannerAlerta.style.display = 'block';
             document.getElementById('alertTrabajadores').innerText = totalTrabajadores;
         } else {
             bannerAlerta.style.display = 'none';
         }
 
-        const fechaActual = new Date();
-        const codigoGenerado = `COT-OHI-${cliente.substring(0,3).toUpperCase().replace(/[^A-Z]/g, 'X')}-${fechaActual.getFullYear()}${String(fechaActual.getMonth()+1).padStart(2,'0')}${String(fechaActual.getDate()).padStart(2,'0')}-V${versionSelec}`;
+        // Lógica de Multiplicador por Sector / Riesgo
+        let factorSector = 1.0; 
+        if (["Minería", "Gas y Petróleo", "Transporte Personal", "Pesquero"].includes(sector)) {
+            factorSector = 1.08; 
+        } else if (sector === "Teletrabajo") {
+            factorSector = 0.92; 
+        }
 
-        let inversionPersonalAcumulada = 0;
+        const fechaActual = new Date();
+        const cleanClient = cliente.substring(0,3).toUpperCase().replace(/[^A-Z]/g, 'X');
+        const codigoGenerado = `COT-OHI-${cleanClient}-${fechaActual.getFullYear()}${String(fechaActual.getMonth()+1).padStart(2,'0')}${String(fechaActual.getDate()).padStart(2,'0')}-V${versionSelec}`;
+
+        let totalCotizacion = 0;
         let htmlCuerpo = "";
 
-        const perfiles = [
-            { id: 'medico', cod: 'OHI-MED', nombre: 'Médico Ocupacional (Dirección de Vigilancia)' },
-            { id: 'enferm_esp', cod: 'OHI-ENF-U', nombre: 'Enfermería Universitaria Especializada' },
-            { id: 'enferm_base', cod: 'OHI-ENF-T', nombre: 'Técnico de Enfermería Asistencial In Situ' }
+        // 1. MÉDICO OCUPACIONAL
+        if (document.getElementById('chk_medico').checked) {
+            let valorDia = parseFloat(document.getElementById('sueldo_medico').value) || 1800;
+            if(valorDia < 1800) valorDia = 1800; 
+            const dias = parseInt(document.getElementById('dias_medico').value) || 1;
+            const subtotal = valorDia * dias * factorSector * factorCredito;
+            totalCotizacion += subtotal;
+            htmlCuerpo += `<tr>
+                <td style="text-align:center; font-weight:bold;">OHI-MED</td>
+                <td><strong>Médico Ocupacional Especializado</strong><br><span style="font-size:0.9em; color:#665;">Asignación prioritaria de Vigilancia Médica de la Salud. Cobertura: ${dias} día(s) por semana.</span></td>
+                <td style="text-align:center;">PRESENCIAL</td>
+                <td style="text-align:right; font-weight:bold;">S/. ${subtotal.toFixed(2)}</td>
+            </tr>`;
+        }
+
+        // 2. ENFERMERO OCUPACIONAL
+        if (document.getElementById('chk_enferm_esp').checked) {
+            let valorDia = parseFloat(document.getElementById('sueldo_enferm_esp').value) || 1100;
+            if(valorDia < 1100) valorDia = 1100;
+            const dias = parseInt(document.getElementById('dias_enferm_esp').value) || 1;
+            const subtotal = valorDia * dias * factorSector * factorCredito;
+            totalCotizacion += subtotal;
+            htmlCuerpo += `<tr>
+                <td style="text-align:center; font-weight:bold;">OHI-ENF-OCU</td>
+                <td><strong>Enfermero(a) Universitario Especializado en SST</strong><br><span style="font-size:0.9em; color:#665;">Gestión técnica operativa de registros de salud y soporte legal SST. ${dias} día(s)/sem.</span></td>
+                <td style="text-align:center;">PRESENCIAL</td>
+                <td style="text-align:right; font-weight:bold;">S/. ${subtotal.toFixed(2)}</td>
+            </tr>`;
+        }
+
+        // 3. ENFERMERO ASISTENCIAL
+        if (document.getElementById('chk_enferm_asist').checked) {
+            let valorDia = parseFloat(document.getElementById('sueldo_enferm_asist').value) || 850;
+            if(valorDia < 850) valorDia = 850;
+            const dias = parseInt(document.getElementById('dias_enferm_asist').value) || 1;
+            const subtotal = valorDia * dias * factorSector * factorCredito;
+            totalCotizacion += subtotal;
+            htmlCuerpo += `<tr>
+                <td style="text-align:center; font-weight:bold;">OHI-ENF-ASI</td>
+                <td><strong>Enfermero(a) Clínico Asistencial (Primeros Auxilios)</strong><br><span style="font-size:0.9em; color:#665;">Soporte de atención inmediata, control de triaje y emergencias de tópico. ${dias} día(s)/sem.</span></td>
+                <td style="text-align:center;">PRESENCIAL</td>
+                <td style="text-align:right; font-weight:bold;">S/. ${subtotal.toFixed(2)}</td>
+            </tr>`;
+        }
+
+        // 4. TRABAJADORA SOCIAL (VARIABLE PRORRATEADA DESDE TARIFA COMPLETA DE 5 DÍAS)
+        if (document.getElementById('chk_bienestar').checked) {
+            let sueldoBase = parseFloat(document.getElementById('sueldo_bienestar').value) || 4500;
+            if(sueldoBase < 4500) sueldoBase = 4500;
+            const dias = parseInt(document.getElementById('dias_bienestar').value) || 1;
+            // Prorrateo basado en semana estándar de 5 días laborales
+            const subtotal = (sueldoBase / 5) * dias * factorSector * factorCredito;
+            totalCotizacion += subtotal;
+            htmlCuerpo += `<tr>
+                <td style="text-align:center; font-weight:bold; color:#2b6cb0;">SIG-TRAB-SOC</td>
+                <td><strong>Especialista en Bienestar Social / Trabajadora Social</strong><br><span style="font-size:0.9em; color:#2b6cb0;">Gestión corporativa de descansos médicos, subsidios de ESSALUD y clima laboral. Cobertura: ${dias} día(s)/sem.</span></td>
+                <td style="text-align:center;">PRESENCIAL</td>
+                <td style="text-align:right; font-weight:bold; color:#2b6cb0;">S/. ${subtotal.toFixed(2)}</td>
+            </tr>`;
+        }
+
+        // 5. PSICOLOGÍA FLEXIBLE
+        if (document.getElementById('chk_psico').checked) {
+            const tipo = document.getElementById('tipo_psico').value;
+            const cant = parseInt(document.getElementById('cant_psico').value) || 1;
+            let subtotal = 0;
+            let detalleText = "";
+            
+            if (tipo === 'jornada') {
+                subtotal = 120 * cant;
+                detalleText = `Gestión Psicosocial Corporativa: ${cant} Jornada(s) Completa(s) al mes.`;
+            } else {
+                subtotal = 15 * cant; 
+                detalleText = `Consultoría de Psicología por Horas Abiertas: ${cant} hora(s) con agenda flexible.`;
+            }
+            subtotal = subtotal * factorCredito;
+            totalCotizacion += subtotal;
+            htmlCuerpo += `<tr>
+                <td style="text-align:center; font-weight:bold;">OHI-PSI</td>
+                <td><strong>Servicios de Psicología Ocupacional</strong><br><span style="font-size:0.9em; color:#665;">${detalleText}</span></td>
+                <td style="text-align:center; text-transform:uppercase;">${tipo}</td>
+                <td style="text-align:right; font-weight:bold;">S/. ${subtotal.toFixed(2)}</td>
+            </tr>`;
+        }
+
+        // 6. MATRIZ SSOMA / SIG MENSUALIZADA FIJA
+        const ssomaItems = [
+            { id: 'ing_soma', cod: 'SIG-ING-SOMA', nombre: 'Ingeniero / Supervisor SSOMA Colegiado', tarifaMensual: 7500, desc: 'Ingeniero Residente responsable del liderazgo normativo y operacional del SGSST en planta/mina.' },
+            { id: 'asist_soma', cod: 'SIG-ASIST-SOMA', nombre: 'Asistente SSOMA In Situ (Bachiller)', tarifaMensual: 3800, desc: 'Bachiller destacado para el control diario de campo, registros obligatorios y soporte operativo.' },
+            { id: 'sig', cod: 'SIG-CONS-AMB', nombre: 'Consultor SIG / Ingeniero Ambiental', tarifaMensual: 5000, desc: 'Especialista a cargo del mantenimiento del Sistema Integrado de Gestión y auditorías de fiscalización ambiental.' },
+            { id: 'geologo', cod: 'SIG-GEOLOGO', nombre: 'Geólogo de Seguridad y Geotecnia', tarifaMensual: 11500, desc: 'Especialista Senior en control de estabilidad de macizo rocoso y prevención estructural en operaciones mineras.' }
         ];
 
-        perfiles.forEach(p => {
-            if (document.getElementById(`chk_${p.id}`).checked) {
-                const sueldoFull = parseFloat(document.getElementById(`sueldo_${p.id}`).value) || 0;
-                const modal = document.getElementById(`mod_${p.id}`).value;
-                const diasSemana = parseInt(document.getElementById(`dias_${p.id}`).value) || 1;
-                
-                const factorDias = diasSemana / 6;
-                const sueldoProporcional = sueldoFull * factorDias;
-
-                const cargaMype = sueldoProporcional * 0.215;
-                const fondoReten = sueldoProporcional * 0.04;
-                
-                const sctr = (modal === 'remoto') ? 15.00 : 56.00;
-                const variablesOperativas = 31.66; 
-
-                const costoTotalFirma = sueldoProporcional + cargaMype + fondoReten + sctr + variablesOperativas;
-                const precioVentaPerfil = (costoTotalFirma / 0.75) * factorCredito;
-                
-                inversionPersonalAcumulada += precioVentaPerfil;
-
+        ssomaItems.forEach(item => {
+            if (document.getElementById(`chk_${item.id}`).checked) {
+                const subtotal = item.tarifaMensual * factorSector * factorCredito;
+                totalCotizacion += subtotal;
                 htmlCuerpo += `<tr>
-                    <td style="text-align: center; font-weight: bold; color: #4a5568;">${p.cod}</td>
-                    <td><strong>${p.nombre}</strong><br><span style="font-size:0.9em; color:#718096;">Cobertura asignada: ${diasSemana} días/semana de forma ${modal.toUpperCase()}.</span></td>
-                    <td style="text-align: center; text-transform: uppercase; font-size:0.9em;">${modal}<br>(${diasSemana}d)</td>
-                    <td style="text-align: right; font-weight: bold;">S/. ${precioVentaPerfil.toFixed(2)}</td>
+                    <td style="text-align:center; font-weight:bold; color:#2b6cb0;">${item.cod}</td>
+                    <td><strong>${item.nombre}</strong><br><span style="font-size:0.9em; color:#2b6cb0;">${item.desc}</span></td>
+                    <td style="text-align:center;">MENSUAL complet.</td>
+                    <td style="text-align:right; font-weight:bold; color:#2b6cb0;">S/. ${subtotal.toFixed(2)}</td>
                 </tr>`;
             }
         });
 
-        let precioTopico = 0;
-        if (incluyeTopico) {
-            let costoTopico = 150 + 43.33; 
-            if (gestionaResiduos) costoTopico += 200;
-            if (sedes > 1) costoTopico += (sedes - 1) * 120; 
-
-            precioTopico = (costoTopico / 0.75) * factorCredito;
-            
+        // 7. ADICIONALES
+        if (sedesTopico > 0) {
+            const inversionTopicos = sedesTopico * 250.00 * factorCredito;
+            totalCotizacion += inversionTopicos;
             htmlCuerpo += `<tr>
-                <td style="text-align: center; font-weight: bold; color: #4a5568;">OHI-TOP-01</td>
-                <td><strong>Operación y Mantenimiento de Tópico de Salud Fijo</strong><br><span style="font-size:0.9em; color:#718096;">Gestión centralizada de insumos, auditoría de atenciones en ${sedes} sedes de control.</span></td>
-                <td style="text-align: center;">MENSUAL</td>
-                <td style="text-align: right; font-weight: bold;">S/. ${precioTopico.toFixed(2)}</td>
+                <td style="text-align:center; font-weight:bold;">OHI-TOP</td>
+                <td><strong>Operación y Mantenimiento de Tópico de Salud Fijo</strong><br><span style="font-size:0.9em; color:#665;">Gestión centralizada de stock, auditoría asistencial implementada en ${sedesTopico} sede(s).</span></td>
+                <td style="text-align:center;">MENSUAL</td>
+                <td style="text-align:right; font-weight:bold;">S/. ${inversionTopicos.toFixed(2)}</td>
             </tr>`;
         }
 
-        let costoVariables = 0;
-        if (jornadasPsico > 0) {
-            costoVariables += (jornadasPsico * 120.00);
+        const capHoras = parseInt(document.getElementById('cap_horas').value) || 0;
+        if (capHoras > 0) {
+            let inversionCap = capHoras * 160.00;
+            if (document.getElementById('cap_cert_ind').checked) {
+                inversionCap += (totalTrabajadores * 0.30);
+            }
+            inversionCap = inversionCap * factorCredito;
+            totalCotizacion += inversionCap;
             htmlCuerpo += `<tr>
-                <td style="text-align: center; font-weight: bold; color: #4a5568;">OHI-PSI-VAR</td>
-                <td><strong>Jornadas de Intervención Psicosocial Extra Solicitadas</strong><br><span style="font-size:0.9em; color:#718096;">Despliegue operativo para talleres de clima, soporte emocional 1 a 1 y aplicación de ISTAS 21.</span></td>
-                <td style="text-align: center;">${jornadasPsico} JORN.</td>
-                <td style="text-align: right; font-weight: bold;">S/. ${(jornadasPsico * 120.00).toFixed(2)}</td>
+                <td style="text-align:center; font-weight:bold;">OHI-CAP-ADIC</td>
+                <td><strong>Programa de Capacitaciones Virtuales Adicionales</strong><br><span style="font-size:0.9em; color:#665;">Desarrollo de ${capHoras} hora(s) temáticas con certificación incluida.</span></td>
+                <td style="text-align:center;">VIRTUAL</td>
+                <td style="text-align:right; font-weight:bold;">S/. ${inversionCap.toFixed(2)}</td>
             </tr>`;
         }
 
-        let costoPremiumAdic = 0;
-        if (atencion247) costoPremiumAdic += 250.00;
-        if (tamizajeAmpliado) costoPremiumAdic += (totalTrabajadores * 0.60 * 4.30);
-        
-        if (costoPremiumAdic > 0) {
-            costoVariables += costoPremiumAdic;
+        if (document.getElementById('residuos').checked) {
+            const inversionRes = 200.00 * factorCredito;
+            totalCotizacion += inversionRes;
             htmlCuerpo += `<tr>
-                <td style="text-align: center; font-weight: bold; color: #4a5568;">OHI-PREM-VAR</td>
-                <td><strong>Módulos Premium de Inteligencia y Soporte de Campaña</strong><br><span style="font-size:0.9em; color:#718096;">Soporte de alerta médica remota 24/7 y/o tamizajes al 100% de la población.</span></td>
-                <td style="text-align: center;">VARIABLE</td>
-                <td style="text-align: right; font-weight: bold;">S/. ${costoPremiumAdic.toFixed(2)}</td>
+                <td style="text-align:center; font-weight:bold;">OHI-ENV-RES</td>
+                <td><strong>Gestión Técnica Normativa de Residuos Biocontaminados</strong><br><span style="font-size:0.9em; color:#665;">Trazabilidad, segregación y cumplimiento normativo medioambiental integral.</span></td>
+                <td style="text-align:center;">MENSUAL</td>
+                <td style="text-align:right; font-weight:bold;">S/. ${inversionRes.toFixed(2)}</td>
             </tr>`;
         }
 
-        let feeCorporativoTramos = 0;
-        if (totalTrabajadores >= 150) {
-            if (totalTrabajadores >= 150 && totalTrabajadores <= 199) feeCorporativoTramos = 200;
-            else if (totalTrabajadores >= 200 && totalTrabajadores <= 249) feeCorporativoTramos = 400;
-            else if (totalTrabajadores >= 250 && totalTrabajadores <= 299) feeCorporativoTramos = 600;
-            else feeCorporativoTramos = 800;
-
-            if (sector === 'Minería' || sector === 'Construcción') feeCorporativoTramos += 150;
-
-            htmlCuerpo += `<tr style="background-color: #f7fafc;">
-                <td style="text-align: center; font-weight: bold; color: #2b6cb0;">OHI-FEE-CORP</td>
-                <td><strong>Fee de Respaldo Operativo y Procesamiento de Datos OHI™</strong><br><span style="font-size:0.9em; color:#2b6cb0;">Procesamiento automatizado de alertas de salud por volumen excedente en el sector ${sector}.</span></td>
-                <td style="text-align: center;">MENSUAL</td>
-                <td style="text-align: right; font-weight: bold; color: #2b6cb0;">S/. ${feeCorporativoTramos.toFixed(2)}</td>
+        if (document.getElementById('fee_transporte').checked) {
+            const feeTrans = 150.00 * factorCredito;
+            totalCotizacion += feeTrans;
+            htmlCuerpo += `<tr>
+                <td style="text-align:center; font-weight:bold;">OHI-LOG-TRA</td>
+                <td><strong>Fee de Respaldo Logístico, SCTR y Transporte</strong><br><span style="font-size:0.9em; color:#665;">Despliegue de equipamiento médico y coberturas de seguro complementario de campo.</span></td>
+                <td style="text-align:center;">MENSUAL</td>
+                <td style="text-align:right; font-weight:bold;">S/. ${feeTrans.toFixed(2)}</td>
             </tr>`;
         }
 
-        const granTotalNeto = inversionPersonalAcumulada + precioTopico + costoVariables + feeCorporativoTramos;
-
+        // FILA FINAL DE SUMATORIA
         htmlCuerpo += `<tr style="font-weight: bold; background-color: #f8fafc; font-size: 1.05em;">
-            <td colspan="3" style="text-align: right; text-transform: uppercase; color:#0f2d59; padding: 12px;">Inversión Total Mensual OHI™ (Neto sin IGV):</td>
-            <td style="color: #0f2d59; text-align: right; padding: 12px; font-size: 1.2em;">S/. ${granTotalNeto.toFixed(2)}</td>
+            <td colspan="3" style="text-align: right; text-transform: uppercase; color:#0f2d59; padding: 10px;">Inversión Total Mensual del Ecosistema OHI™ (Neto sin IGV):</td>
+            <td style="color: #0f2d59; text-align: right; padding: 10px; font-size: 1.1em;">S/. ${totalCotizacion.toFixed(2)}</td>
         </tr>`;
 
         document.getElementById('cuerpoTablaCostos').innerHTML = htmlCuerpo;
 
-        document.getElementById('pdfSubtitulo').innerText = `Cliente: ${cliente} · Sector: ${sector} · Sedes: ${sedes}`;
+        // Sincronización con la vista del PDF
+        document.getElementById('pdfSubtitulo').innerText = `Cliente: ${cliente} · Sector: ${sector} · Sedes Operativas: ${sedes}`;
         document.getElementById('pdfCodigo').innerText = codigoGenerado;
         document.getElementById('pdfVersion').innerText = versionSelec;
         document.getElementById('pdfSector').innerText = sector;
-        document.getElementById('pdfSedesTexto').innerText = sedes;
-        document.getElementById('pdfPorcentajeGlucosa').innerText = tamizajeAmpliado ? "100" : "40";
         
         const selectCredito = document.getElementById('credito');
-        const diasTexto = selectCredito.options[selectCredito.selectedIndex].text.split(' ')[0];
-        document.getElementById('pdfDias').innerText = diasTexto;
+        document.getElementById('pdfDias').innerText = selectCredito.options[selectCredito.selectedIndex].text.split(' ')[0];
 
-        const asuntoCor = encodeURIComponent(`Propuesta del Sistema de Inteligencia Médica OHI™ — Pharmony (${cliente})`);
-        const cuerpoCor = encodeURIComponent(`Estimado equipo de ${cliente},\n\nEs un placer saludarlos. En línea con su visión de control de riesgos para el sector de ${sector}, compartimos la proforma comercial de nuestro ecosistema corporativo PHARMONY OHI™ (Occupational Health Intelligence), codificada bajo el registro ${codigoGenerado}.\n\nEste plan estructurado no representa únicamente la asignación de personal médico aislado, sino la integración completa de un sistema de vigilancia epidemiológica, alertas automatizadas, control técnico en sus ${sedes} sedes de operación y el respaldo de nuestras Jefaturas.\n\nInversión Mensual del Sistema OHI™: S/. ${granTotalNeto.toFixed(2)} (Neto sin IGV, condiciones de crédito a ${diasTexto} días).\n\nAdjuntamos el desglose de entregables técnicos para su revisión en el archivo adjunto.\n\nAtentamente,\nJefatura de Administración y Finanzas\nPHARMONY OHI™\nRUC: 20614205351`);
-        document.getElementById('btnEmail').href = `mailto:?subject=${asuntoCor}&body=${cuerpoCor}`;
+        // Sincronizar enlace de Correo Corporativo - Remitente directo comercialperu@
+        const asuntoCor = encodeURIComponent(`Propuesta del Sistema Corporativo Integrado OHI™ — Pharmony (${cliente})`);
+        const cuerpoCor = encodeURIComponent(`Estimado equipo de ${cliente},\n\nRemitimos los términos económicos del Sistema Corporativo Integrado de Inteligencia de Salud PHARMONY OHI™ bajo el registro oficial ${codigoGenerado}.\n\nInversión Cotizada: S/. ${totalCotizacion.toFixed(2)} (Neto sin IGV).\n\nQuedamos a su disposición para la coordinación del despliegue operativo.\n\nAtentamente,\nÁrea Comercial\nPHARMONY SST`);
+        document.getElementById('btnEmail').href = `mailto:comercialperu@pharmonysst.com?subject=${asuntoCor}&body=${cuerpoCor}`;
     }
 
     function descargarPDF() {
@@ -685,22 +588,18 @@
         const codigoDoc = document.getElementById('pdfCodigo').innerText;
         
         const opt = {
-            margin:       12,
-            filename:     `PHARMONY_OHI_Cost_Estimator_${clienteNom}_${codigoDoc}.pdf`,
+            margin:       10,
+            filename:     `PHARMONY_OHI_${clienteNom}_${codigoDoc}.pdf`,
             image:        { type: 'jpeg', quality: 0.98 },
-            html2canvas:  { 
-                scale: 2, 
-                logging: false,
-                useCORS: false,
-                letterRendering: true
-            },
+            html2canvas:  { scale: 2, logging: false, letterRendering: true },
             jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
         };
-        
         html2pdf().from(element).set(opt).save();
     }
 
-    window.onload = calcularTodo;
+    window.onload = function() {
+        calcularTodo();
+    };
 </script>
 
 </body>
