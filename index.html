@@ -3,19 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cotizador Profesional — Pharmony</title>
-    <!-- Librería gratuita para generar PDFs -->
+    <title>Cotizador Multiprofesional Corporativo — Pharmony SST</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Arial', sans-serif;
             background-color: #f4f6f9;
             color: #333;
             margin: 0;
             padding: 20px;
+            line-height: 1.35;
         }
         .container {
-            max-width: 1000px;
+            max-width: 1100px;
             margin: 0 auto;
             background: #ffffff;
             padding: 30px;
@@ -27,32 +27,55 @@
             border-bottom: 3px solid #2b6cb0;
             padding-bottom: 10px;
             margin-top: 0;
+            font-size: 1.8em;
         }
         h2 {
             color: #2b6cb0;
-            margin-top: 25px;
-            font-size: 1.3em;
+            margin-top: 15px;
+            font-size: 1.15em;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 5px;
         }
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 20px;
             margin-bottom: 20px;
         }
         .card {
-            background: #f7fafc;
+            background: #f8fafc;
             border: 1px solid #e2e8f0;
-            padding: 15px;
+            padding: 20px;
             border-radius: 6px;
         }
         .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 12px;
+        }
+        .perfil-row {
+            background: #ffffff;
+            border: 1px solid #cbd5e0;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 8px;
+        }
+        .perfil-check {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: bold;
+            color: #2d3748;
+        }
+        .perfil-input-group {
+            margin-top: 8px;
+            display: none;
+            gap: 10px;
         }
         label {
             display: block;
             font-weight: bold;
-            margin-bottom: 5px;
+            margin-bottom: 4px;
             color: #4a5568;
+            font-size: 0.85em;
         }
         select, input[type="number"], input[type="text"] {
             width: 100%;
@@ -60,6 +83,7 @@
             border: 1px solid #cbd5e0;
             border-radius: 4px;
             box-sizing: border-box;
+            font-size: 0.9em;
         }
         .checkbox-group {
             display: flex;
@@ -67,29 +91,112 @@
             gap: 10px;
             margin-top: 10px;
         }
-        table {
+        .checkbox-group label {
+            margin-bottom: 0;
+            cursor: pointer;
+            font-size: 0.9em;
+        }
+        
+        /* Estilos de Impresión Estilo Proforma Transnacional */
+        #propuesta-pdf {
+            background: white;
+            padding: 50px;
+            border: 1px solid #cbd5e0;
+            margin-top: 30px;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .tabla-cabecera {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 25px;
+        }
+        .tabla-cabecera td {
+            border: 1px solid #1a365d;
+            padding: 12px;
+            vertical-align: middle;
+        }
+        .cabecera-logo {
+            width: 25%;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.4em;
+            color: #1a365d;
+            letter-spacing: 1px;
+        }
+        .cabecera-titulo {
+            width: 50%;
+            text-align: center;
+            font-weight: bold;
+            color: #1a365d;
+            font-size: 1.1em;
+        }
+        .cabecera-meta {
+            width: 25%;
+            font-size: 0.8em;
+            padding: 0 !important;
+        }
+        .subtabla-meta {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .subtabla-meta td {
+            border: none !important;
+            border-bottom: 1px solid #1a365d !important;
+            padding: 6px 10px !important;
+        }
+        .subtabla-meta tr:last-child td {
+            border-bottom: none !important;
+        }
+        
+        table.tabla-costos {
             width: 100%;
             border-collapse: collapse;
             margin-top: 15px;
-            font-size: 0.9em;
+            margin-bottom: 25px;
+            font-size: 0.85em;
         }
-        th, td {
+        table.tabla-costos th, table.tabla-costos td {
             border: 1px solid #cbd5e0;
-            padding: 10px;
+            padding: 10px 12px;
             text-align: left;
         }
-        th {
-            background-color: #2b6cb0;
+        table.tabla-costos th {
+            background-color: #1a365d;
             color: white;
+            text-transform: uppercase;
+            font-size: 0.9em;
+            letter-spacing: 0.5px;
         }
+        
+        .box-seccion {
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 18px;
+            margin-top: 20px;
+            border-radius: 4px;
+            font-size: 0.85em;
+        }
+        .box-seccion strong {
+            color: #1a365d;
+            font-size: 1em;
+        }
+        .box-seccion ul {
+            margin: 8px 0 0 20px;
+            padding: 0;
+        }
+        .box-seccion li {
+            margin-bottom: 6px;
+        }
+
         .actions-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 15px;
-            margin-top: 20px;
+            margin-top: 25px;
         }
         .btn {
-            padding: 12px;
+            padding: 14px;
             border: none;
             border-radius: 4px;
             cursor: pointer;
@@ -99,198 +206,373 @@
             text-decoration: none;
         }
         .btn-pdf { background-color: #e53e3e; color: white; }
-        .btn-email { background-color: #3182ce; color: white; }
+        .btn-email { background-color: #2b6cb0; color: white; }
         .btn:hover { opacity: 0.9; }
-        
-        /* Estilo de la Hoja de la Propuesta que se convertirá en PDF */
-        #propuesta-pdf {
-            background: white;
-            padding: 40px;
-            border: 1px solid #e2e8f0;
-            margin-top: 30px;
-            border-radius: 4px;
-        }
-        .logo-placeholder {
-            font-size: 24px;
-            font-weight: bold;
-            color: #1a365d;
-            border-bottom: 2px solid #1a365d;
-            padding-bottom: 10px;
-            margin-bottom: 20px;
-        }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>Cotizador Inteligente de Servicios SST</h1>
+    <h1>Cotizador Multiprofesional — Pharmony SST</h1>
     
     <div class="grid">
         <div class="card">
-            <h2>1. Datos del Cliente</h2>
+            <h2>1. Parámetros Comerciales</h2>
             <div class="form-group">
-                <label for="cliente">Nombre de la Empresa</label>
-                <input type="text" id="cliente" value="Cliente S.A.C." oninput="calcularTodo()">
+                <label for="cliente">Razón Social del Cliente</label>
+                <input type="text" id="cliente" value="BRIGHTCELL LOGISTICS PERU S.A.C." oninput="calcularTodo()">
+            </div>
+            <div class="form-group">
+                <label for="trabajadores">N.° Total de Trabajadores</label>
+                <input type="number" id="trabajadores" value="100" min="1" oninput="calcularTodo()">
+            </div>
+            <div class="form-group">
+                <label for="version">Versión de la Propuesta</label>
+                <select id="version" onchange="calcularTodo()">
+                    <option value="1">Versión 1</option>
+                    <option value="2" selected>Versión 2 (Ajustada)</option>
+                    <option value="3">Versión 3</option>
+                    <option value="4">Versión 4</option>
+                </select>
             </div>
             <div class="form-group">
                 <label for="credito">Plazo de Pago</label>
                 <select id="credito" onchange="calcularTodo()">
-                    <option value="1.000">30 días (Línea Base Regular)</option>
-                    <option value="1.0075">45 días (+0.75% recargo)</option>
-                    <option value="1.015">60 días (+1.50% recargo)</option>
-                    <option value="1.030">90 días (+3.00% recargo)</option>
+                    <option value="1.000">30 días netos (Regular)</option>
+                    <option value="1.0075">45 días (+0.75%)</option>
+                    <option value="1.015">60 días (+1.50%)</option>
+                    <option value="1.030">90 días (+3.00%)</option>
                 </select>
             </div>
         </div>
 
         <div class="card">
-            <h2>2. Configuración del Servicio</h2>
-            <div class="form-group">
-                <label for="perfil">Personal Asignado</label>
-                <select id="perfil" onchange="cambiarPerfil()">
-                    <option value="4200">Médico Ocupacional (Diplomado)</option>
-                    <option value="2700">Enfermero(a) (Diplomado)</option>
-                    <option value="2200">Enfermero(a) (Sin Especialidad)</option>
-                    <option value="2800">Psicólogo / Analista SOMA</option>
-                </select>
+            <h2>2. Personal SST Requerido (Suma Activa)</h2>
+            
+            <div class="perfil-row">
+                <div class="perfil-check">
+                    <input type="checkbox" id="chk_medico" checked onchange="togglePerfil('medico')">
+                    <label for="chk_medico">Médico Ocupacional (Diplomado)</label>
+                </div>
+                <div id="group_medico" class="perfil-input-group" style="display: block;">
+                    <input type="number" id="sueldo_medico" value="4200" placeholder="Sueldo Base" oninput="calcularTodo()">
+                </div>
             </div>
-            <div class="form-group">
-                <label for="sueldo">Sueldo Base Mensual (S/.)</label>
-                <input type="number" id="sueldo" value="4200" oninput="calcularTodo()">
+
+            <div class="perfil-row">
+                <div class="perfil-check">
+                    <input type="checkbox" id="chk_enferm_esp" onchange="togglePerfil('enferm_esp')">
+                    <label for="chk_enferm_esp">Enfermero(a) (Diplomado)</label>
+                </div>
+                <div id="group_enferm_esp" class="perfil-input-group">
+                    <input type="number" id="sueldo_enferm_esp" value="2700" placeholder="Sueldo Base" oninput="calcularTodo()">
+                </div>
             </div>
-            <div class="form-group">
-                <label for="modalidad">Modalidad</label>
-                <select id="modalidad" onchange="calcularTodo()">
-                    <option value="Presencial">Presencial</option>
-                    <option value="Remoto">Remoto</option>
-                </select>
+
+            <div class="perfil-row">
+                <div class="perfil-check">
+                    <input type="checkbox" id="chk_enferm_base" onchange="togglePerfil('enferm_base')">
+                    <label for="chk_enferm_base">Enfermero(a) (Sin Especialidad)</label>
+                </div>
+                <div id="group_enferm_base" class="perfil-input-group">
+                    <input type="number" id="sueldo_enferm_base" value="2200" placeholder="Sueldo Base" oninput="calcularTodo()">
+                </div>
+            </div>
+
+            <div class="perfil-row">
+                <div class="perfil-check">
+                    <input type="checkbox" id="chk_psico" onchange="togglePerfil('psico')">
+                    <label for="chk_psico">Psicólogo / Analista SOMA</label>
+                </div>
+                <div id="group_psico" class="perfil-input-group">
+                    <input type="number" id="sueldo_psico" value="2800" placeholder="Sueldo Base" oninput="calcularTodo()">
+                </div>
             </div>
         </div>
 
         <div class="card">
-            <h2>3. Adicionales de Tópico</h2>
+            <h2>3. Operación de Tópico y Módulos Premium</h2>
             <div class="checkbox-group">
                 <input type="checkbox" id="incluyeTopico" checked onchange="calcularTodo()">
-                <label for="incluyeTopico">Operación de Tópico (Base S/. 200)</label>
+                <label for="incluyeTopico">Operación de Tópico Médico Fijo</label>
             </div>
             <div class="checkbox-group">
                 <input type="checkbox" id="residuos" checked onchange="calcularTodo()">
-                <label for="residuos">Gestión de Residuos (+S/. 200)</label>
+                <label for="residuos">Gestión de Residuos Biocontaminados</label>
+            </div>
+            <div class="checkbox-group">
+                <input type="checkbox" id="psicologoPremium" onchange="calcularTodo()">
+                <label for="psicologoPremium"><strong>Ampliar Psicología (Jornada Extra +S/.120)</strong></label>
+            </div>
+            <div class="checkbox-group">
+                <input type="checkbox" id="tamizaje100" onchange="calcularTodo()">
+                <label for="tamizaje100"><strong>Ampliar Tamizaje de Glucosa al 100%</strong></label>
             </div>
         </div>
     </div>
 
-    <!-- DOCUMENTO DE VISTA PREVIA (Esto es lo que se vuelve PDF) -->
     <div id="propuesta-pdf">
-        <div class="logo-placeholder">PHARMONY | Salud Ocupacional</div>
-        <p><strong>PROPUESTA TÉCNICO-ECONÓMICA DE SERVICIOS SST</strong></p>
-        <p><strong>Preparado para:</strong> <span id="pdfCliente">Cliente S.A.C.</span></p>
-        <p>De nuestra consideración, presentamos los costos mensuales calculados para la gestión integral de su salud ocupacional:</p>
+        <table class="tabla-cabecera">
+            <tr>
+                <td class="cabecera-logo">
+                    PHARMONY<br>
+                    <span style="font-size:0.35em; display:block; font-weight:normal; color:#4a5568; margin-top:3px;">SALUD Y SEGURIDAD LABORAL</span>
+                </td>
+                <td class="cabecera-titulo">
+                    PROFORMA DE INVERSIÓN CORPORATIVA: SERVICIOS SST<br>
+                    <span style="font-size:0.75em; font-weight:normal; color:#4a5568;" id="pdfSubtitulo">Cliente: BRIGHTCELL LOGISTICS PERU S.A.C.</span>
+                </td>
+                <td class="cabecera-meta">
+                    <table class="subtabla-meta">
+                        <tr>
+                            <td style="font-weight:bold; width:50%;">Código:</td>
+                            <td id="pdfCodigo" style="color:#1a365d; font-weight:bold;">COT-SST-XXXXXXXX-V2</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight:bold;">Versión:</td>
+                            <td id="pdfVersion" style="color:#1a365d; font-weight:bold;">2</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight:bold;">Período:</td>
+                            <td id="pdfPeriodo">Junio 2026</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
         
-        <table>
+        <p><strong>PHARMONY SERVICIOS DE SEGURIDAD, SALUD Y MEDIO AMBIENTE E.I.R.L.</strong> (RUC: 20614205351), presenta la proforma técnica y comercial detallada para la externalización estratégica de la Vigilancia de la Salud bajo el marco normativo de la Ley N.° 29783:</p>
+        
+        <div class="box-seccion" style="background-color: #f1f5f9; border-left: 4px solid #1a365d;">
+            <strong>👥 DIRECCIONAMIENTO TÉCNICO Y SUPERVISIÓN DE OPERACIONES:</strong>
+            <p style="margin: 4px 0 6px 0; line-height: 1.3;">La operación destacada de Pharmony en su organización cuenta con la auditoría constante y el liderazgo de nuestro comité de Jefaturas:</p>
+            <ul style="list-style-type: square;">
+                <li><strong>Dirección de Vigilancia Médica:</strong> Liderado por el <strong>Dr. Pedro Pereda</strong> (Jefe de Operaciones de Salud Ocupacional). Custodia de historias clínicas, diseño epidemiológico y visado técnico de aptitudes médicas.</li>
+                <li><strong>Jefatura de Seguridad Técnica:</strong> Liderado por el <strong>Ing. Billy Seminario</strong> (Ingeniero de Minas). Fiscalización de matrices IPERC, procesos críticos en planta y soporte legal técnico ante inspecciones del estado.</li>
+                <li><strong>Jefatura de Gestión Ambiental y SSOMA:</strong> Liderado por <strong>Eduardo Sánchez</strong> (Especialista SSOMA). Aseguramiento de políticas medioambientales, auditorías operativas y manejo técnico de residuos biocontaminados.</li>
+            </ul>
+        </div>
+
+        <div class="box-seccion" style="background-color: #ffffff; border: 1px solid #cbd5e0;">
+            <strong>📋 ALCANCE OPERATIVO Y FUNCIONES DEL PERSONAL DESTACADO:</strong>
+            <p style="margin: 4px 0 6px 0; line-height: 1.3;">El personal técnico provisto ejecutará estrictamente las siguientes actividades de ley:</p>
+            <div id="pdfFuncionesDinamicas" style="line-height: 1.4;">
+                </div>
+        </div>
+
+        <table class="tabla-costos">
             <thead>
                 <tr>
-                    <th>Detalle del Servicio Integral</th>
-                    <th>Modalidad</th>
-                    <th>Inversión Mensual</th>
+                    <th style="width: 12%; text-align: center;">ÍTEM / CÓD.</th>
+                    <th style="width: 53%;">DESCRIPCIÓN DE LA COBERTURA OPERATIVA</th>
+                    <th style="width: 15%; text-align: center;">REGIMEN</th>
+                    <th style="width: 20%; text-align: right;">INVERSIÓN NETO</th>
                 </tr>
             </thead>
-            <tbody>
-                <tr>
-                    <td>Asignación de Personal de Salud Especializado con Dirección Médica y soporte legal continuo.</td>
-                    <td id="pdfModalidad">Presencial</td>
-                    <td id="pdfMontoPersonal">S/. 0.00</td>
-                </tr>
-                <tr id="filaTopicoPdf">
-                    <td>Servicio de Mantenimiento y Operación de Tópico Médico in Situ (incluye reposición de insumos de primera respuesta y conectividad).</td>
-                    <td>Presencial</td>
-                    <td id="pdfMontoTopico">S/. 0.00</td>
-                </tr>
-                <tr style="font-weight: bold; background-color: #f7fafc;">
-                    <td colspan="2">COSTO MENSUAL DEL SERVICIO INTEGRAL (SIN IGV)</td>
-                    <td id="pdfMontoTotal" style="color: #2b6cb0;">S/. 0.00</td>
-                </tr>
-            </tbody>
+            <tbody id="cuerpoTablaCostos">
+                </tbody>
         </table>
 
-        <p style="margin-top:20px; font-size: 0.85em; color: #718096;">
-            <strong>Condiciones Comerciales:</strong><br>
-            • Validez de la propuesta: 30 días.<br>
-            • Periodicidad del pago: Crédito corporativo a <span id="pdfDias">30</span> días netos posteriores a la factura.<br>
-            • Incluye coberturas de ley: SCTR Salud y Pensión para el personal destacado presencial.
+        <div class="box-seccion">
+            <strong>⚖️ ALCANCE TÉCNIO Y CUMPLIMIENTO NORMATIVO LEGAL:</strong>
+            <p style="margin: 4px 0 0 0; line-height: 1.4;">La propuesta técnica garantiza la cobertura integral de la empresa usuaria frente a las auditorías de ley e inspecciones del estado:</p>
+            <ul>
+                <li><strong>Ley N.° 29783:</strong> Estricta ejecución y control del plan anual de vigilancia médica de los colaboradores.</li>
+                <li><strong>R.M. 312-2011-MINSA:</strong> Levantamiento, análisis e interpretación técnica de Protocolos de Exámenes Médicos Ocupacionales (EMO).</li>
+                <li><strong>R.M. 021-2016-MINSA:</strong> Correcta apertura, custodia y visado del Libro de Atenciones de Urgencia en Tópico.</li>
+                <li><strong>Garantía Laboral Corporativa:</strong> Todo el staff médico de Pharmony cuenta obligatoriamente con coberturas SCTR Activas, rompiendo la responsabilidad solidaria ante accidentes del cliente.</li>
+            </ul>
+        </div>
+
+        <div class="box-seccion" style="border-left: 4px solid #2b6cb0;">
+            <strong>🎯 VALOR DIFERENCIAL INTEGRADO (COSTO S/. 0.00):</strong>
+            <ul>
+                <li><strong>Soporte Psicosocial Incluido:</strong> 4 horas al mes de Psicóloga Ocupacional para dictar charlas, capacitaciones y la ejecución de cápsulas emocionales ("Pausas Activas Psicoemocionales"). Permite programar hasta 2 atenciones clínicas 1 a 1 por hora mediante agenda libre con el enfermero de tópico.</li>
+                <li><strong>Ahorro en Monitoreo Anual:</strong> Pharmony autoriza el uso de estas horas profesionales para ejecutar la aplicación e interpretación de la **Encuesta de Riesgos Psicosociales ISTAS 21**, liberando al cliente de contratar consultores externos.</li>
+                <li><strong>Programa de Vida Saludable:</strong> Campaña de tamizaje preventivo de glucosa bonificado anual al <span id="pdfPorcentajeGlucosa">40</span>% de la población total (tiras y lancetas incluidas).</li>
+                <li><strong>Garantía de Contingencias SUNAFIL:</strong> Respaldo e intervención médica técnica especializada en menos de 24 horas para asesoría en fiscalizaciones laborales.</li>
+            </ul>
+        </div>
+
+        <p style="margin-top:25px; font-size: 0.8em; color: #4a5568; line-height: 1.4;">
+            <strong>Condiciones Generales de Contratación:</strong><br>
+            • Los costos indicados se encuentran expresados en Soles (S/.) y no contemplan el Impuesto General a las Ventas (IGV).<br>
+            • Régimen Comercial: Crédito corporativo asignado a <span id="pdfDias">30</span> días netos tras la conformidad del cierre mensual.<br>
+            • Validez de la proforma económica: 30 días calendario a partir de su emisión.
         </p>
     </div>
 
-    <!-- BOTONES DE AUTOMATIZACIÓN -->
     <div class="actions-grid">
-        <button class="btn btn-pdf" onclick="descargarPDF()">📥 Descargar Propuesta en PDF</button>
-        <a id="btnEmail" class="btn btn-email" href="#">✉️ Enviar por Correo al Cliente</a>
+        <button class="btn btn-pdf" onclick="descargarPDF()">📥 Descargar Propuesta Formal (PDF)</button>
+        <a id="btnEmail" class="btn btn-email" href="#">✉️ Redactar Correo al Cliente</a>
     </div>
 </div>
 
 <script>
-    function cambiarPerfil() {
-        document.getElementById('sueldo').value = document.getElementById('perfil').value;
+    function togglePerfil(id) {
+        const checkbox = document.getElementById(`chk_${id}`);
+        const group = document.getElementById(`group_${id}`);
+        group.style.display = checkbox.checked ? 'block' : 'none';
         calcularTodo();
     }
 
     function calcularTodo() {
-        const cliente = document.getElementById('cliente').value;
-        const sueldoBase = parseFloat(document.getElementById('sueldo').value) || 0;
+        const cliente = document.getElementById('cliente').value || "CLIENTE POR DESIGNAR";
+        const totalTrabajadores = parseInt(document.getElementById('trabajadores').value) || 1;
         const factorCredito = parseFloat(document.getElementById('credito').value);
-        const modalidad = document.getElementById('modalidad').value;
+        const versionSelec = document.getElementById('version').value;
+        
         const incluyeTopico = document.getElementById('incluyeTopico').checked;
         const gestionaResiduos = document.getElementById('residuos').checked;
+        const psicologoExtra = document.getElementById('psicologoPremium').checked;
+        const tamizajeAmpliado = document.getElementById('tamizaje100').checked;
+
+        // 1. Fechas y Codificación Estilo Kardex
+        const fechaActual = new Date();
+        const meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+        const periodoTexto = `${meses[fechaActual.getMonth()]} ${fechaActual.getFullYear()}`;
+        
+        const año = fechaActual.getFullYear();
+        const mes = String(fechaActual.getMonth() + 1).padStart(2, '0');
+        const dia = String(fechaActual.getDate()).padStart(2, '0');
+        const siglas = cliente.substring(0, 3).toUpperCase().replace(/[^A-Z]/g, 'X');
+        const codigoGenerado = `COT-${siglas}-${año}${mes}${dia}-V${versionSelec}`;
+
+        // 2. Lógica de Suma de Múltiples Perfiles de Personal y Funciones Dinámicas
+        let inversionPersonalAcumulada = 0;
+        let htmlFunciones = "";
+        let htmlCuerpo = "";
+        let itemIndex = 1;
+
+        const perfilesDisponibles = [
+            { id: 'medico', cod: 'SST-MED', nombre: 'Médico Ocupacional Destacado', desc: 'Vigilancia Médica Continua y Gestión de Salud Ocupacional.', funciones: '<strong>Médico Ocupacional:</strong> Diseño y firma del Plan Anual de Salud; lectura, control clínico y levantamiento técnico de observaciones en Protocolos EMO; análisis epidemiológico de ausentismo y asesoría técnica directa ante SUNAFIL.' },
+            { id: 'enferm_esp', cod: 'SST-ENF-E', nombre: 'Enfermero(a) Universitario Especializado', desc: 'Liderazgo de Tópico, Diplomado/Especialidad HSEQ.', funciones: '<strong>Enfermero(a) Especializado:</strong> Administración general del tópico, auditoría de historias clínicas, atención avanzada de urgencias y control del plan preventivo.' },
+            { id: 'enferm_base', cod: 'SST-ENF-B', nombre: 'Enfermero(a) Técnico Asistencial', desc: 'Soporte de Atenciones Básicas y Primeros Auxilios.', funciones: '<strong>Enfermero(a) Asistencial:</strong> Registro estricto de atenciones en el Libro de Urgencias, control de stock de medicamentos y asistencia inmediata en primeros auxilios.' },
+            { id: 'psico', cod: 'SST-PSI', nombre: 'Psicólogo Ocupacional Destacado', desc: 'Gestión Psicosocial y Análisis de Clima SOMA.', funciones: '<strong>Psicólogo Ocupacional:</strong> Evaluación de riesgos psicosociales (ISTAS 21), soporte clínico individualizado y dictado de talleres psicoemocionales corporativos.' }
+        ];
+
+        perfilesDisponibles.forEach(p => {
+            if (document.getElementById(`chk_${p.id}`).checked) {
+                const sueldoBase = parseFloat(document.getElementById(`sueldo_${p.id}`).value) || 0;
+                const cargaMype = sueldoBase * 0.215;
+                const fondoReten = sueldoBase * 0.04;
+                const sctr = 56.00;
+                const emoPrg = 10.83;
+                const uniformes = 20.83;
+                const costoTotalFirma = sueldoBase + cargaMype + fondoReten + sctr + emoPrg + uniformes;
+                const precioVentaPerfil = (costoTotalFirma / 0.75) * factorCredito;
+                
+                inversionPersonalAcumulada += precioVentaPerfil;
+
+                htmlFunciones += `<p style="margin-bottom: 6px;">• ${p.funciones}</p>`;
+
+                htmlCuerpo += `<tr>
+                    <td style="text-align: center; font-weight: bold; color: #4a5568;">${p.cod}</td>
+                    <td>Asignación de Personal Especializado: <strong>${p.nombre}</strong><br><span style="font-size:0.9em; color:#718096;">Alcance: ${p.desc}</span></td>
+                    <td style="text-align: center;">Mensual</td>
+                    <td style="text-align: right; font-weight: bold;">S/. ${precioVentaPerfil.toFixed(2)}</td>
+                </tr>`;
+                itemIndex++;
+            }
+        });
+
+        document.getElementById('pdfFuncionesDinamicas').innerHTML = htmlFunciones || "<p style='color:#e53e3e;'>Ningún perfil seleccionado actualmente.</p>";
+
+        // 3. Operación de Tópico Médico
+        let precioTopico = 0;
+        if (incluyeTopico) {
+            let costoTopico = 150 + 43.33; 
+            if (gestionaResiduos) costoTopico += 200;
+            precioTopico = (costoTopico / 0.75) * factorCredito;
+            
+            htmlCuerpo += `<tr>
+                <td style="text-align: center; font-weight: bold; color: #4a5568;">SST-TOP-01</td>
+                <td><strong>Servicio de Operación y Mantenimiento de Tópico de Salud in situ</strong><br><span style="font-size:0.9em; color:#718096;">Incluye control de insumos, apertura de historias y custodia de registros de urgencias.</span></td>
+                <td style="text-align: center;">Mensual</td>
+                <td style="text-align: right; font-weight: bold;">S/. ${precioTopico.toFixed(2)}</td>
+            </tr>`;
+            itemIndex++;
+        }
+
+        // 4. Módulos Adicionales Variables
+        let costoAdicionales = 0;
+        if (psicologoExtra) costoAdicionales += 120.00;
+        if (tamizajeAmpliado) {
+            const excedenteGlucosa = totalTrabajadores * 0.60;
+            costoAdicionales += (excedenteGlucosa * 4.30);
+        }
+
+        if (costoAdicionales > 0) {
+            htmlCuerpo += `<tr>
+                <td style="text-align: center; font-weight: bold; color: #4a5568;">SST-VAR-02</td>
+                <td><strong>Adicionales de Campaña Especiales Solicitados</strong><br><span style="font-size:0.9em; color:#718096;">Ampliación de tamizajes de glucosa y/o extensión de jornadas de psicología ocupacional.</span></td>
+                <td style="text-align: center;">Variable</td>
+                <td style="text-align: right; font-weight: bold;">S/. ${costoAdicionales.toFixed(2)}</td>
+            </tr>`;
+        }
+
+        // 5. FEE CORPORATIVO ESTABLE POR TRAMOS DE 50 PERSONAS
+        let feeCorporativoTramos = 0;
+        if (totalTrabajadores >= 150) {
+            if (totalTrabajadores >= 150 && totalTrabajadores <= 199) feeCorporativoTramos = 200;
+            else if (totalTrabajadores >= 200 && totalTrabajadores <= 249) feeCorporativoTramos = 400;
+            else if (totalTrabajadores >= 250 && totalTrabajadores <= 299) feeCorporativoTramos = 600;
+            else feeCorporativoTramos = 800;
+
+            htmlCuerpo += `<tr style="background-color: #fffaf0;">
+                <td style="text-align: center; font-weight: bold; color: #b7791f;">SST-FEE-CORP</td>
+                <td><strong>Fee de Respaldo Operativo por Gestión Excedente de Vigilancia Médica Corporativa</strong><br><span style="font-size:0.9em; color:#b7791f;">Aplicado de forma automática por tramo volumétrico de control de data mayor a 150 colaboradores.</span></td>
+                <td style="text-align: center;">Mensual</td>
+                <td style="text-align: right; font-weight: bold; color: #b7791f;">S/. ${feeCorporativoTramos.toFixed(2)}</td>
+            </tr>`;
+        }
+
+        // 6. Gran Total
+        const precioTotalGeneral = inversionPersonalAcumulada + precioTopico + costoAdicionales + feeCorporativoTramos;
+
+        htmlCuerpo += `<tr style="font-weight: bold; background-color: #f8fafc; font-size: 1.05em;">
+            <td colspan="3" style="text-align: right; text-transform: uppercase; color:#1a365d; padding: 14px;">Inversión Total Mensual Estructurada (Neto sin IGV):</td>
+            <td style="color: #1a365d; text-align: right; padding: 14px; font-size: 1.15em;">S/. ${precioTotalGeneral.toFixed(2)}</td>
+        </tr>`;
+
+        document.getElementById('cuerpoTablaCostos').innerHTML = htmlCuerpo;
+
+        // Render de Datos de Cabecera y Textos
+        document.getElementById('pdfSubtitulo').innerText = `Cliente: ${cliente} · Período: ${periodoTexto}`;
+        document.getElementById('pdfCodigo').innerText = codigoGenerado;
+        document.getElementById('pdfVersion').innerText = versionSelec;
+        document.getElementById('pdfPeriodo').innerText = periodoTexto;
+        document.getElementById('pdfPorcentajeGlucosa').innerText = tamizajeAmpliado ? "100" : "40";
         
         const selectCredito = document.getElementById('credito');
         const diasTexto = selectCredito.options[selectCredito.selectedIndex].text.split(' ')[0];
-
-        // Cálculos internos (Margen 25% asegurado)
-        const cargaMype = sueldoBase * 0.215;
-        const fondoReten = sueldoBase * 0.04;
-        const sctr = (modalidad === 'Presencial') ? 56.00 : 0;
-        const emo = 10.83;
-        const eppUniformes = (modalidad === 'Presencial') ? 20.83 : 0;
-        const costoPersonalTotal = sueldoBase + cargaMype + fondoReten + sctr + emo + eppUniformes;
-        const precioPersonal = (costoPersonalTotal / 0.75) * factorCredito;
-
-        let precioTopico = 0;
-        if (incluyeTopico) {
-            let costoTopico = 150 + 43.33;
-            if (gestionaResiduos) costoTopico += 200;
-            precioTopico = (costoTopico / 0.75) * factorCredito;
-            document.getElementById('filaTopicoPdf').style.display = 'table-row';
-        } else {
-            document.getElementById('filaTopicoPdf').style.display = 'none';
-        }
-
-        const precioTotalGeneral = precioPersonal + precioTopico;
-
-        // Inyectar datos en la vista del documento PDF
-        document.getElementById('pdfCliente').innerText = cliente;
-        document.getElementById('pdfModalidad').innerText = modalidad;
-        document.getElementById('pdfMontoPersonal').innerText = 'S/. ' + precioPersonal.toFixed(2);
-        document.getElementById('pdfMontoTopico').innerText = 'S/. ' + precioTopico.toFixed(2);
-        document.getElementById('pdfMontoTotal').innerText = 'S/. ' + precioTotalGeneral.toFixed(2);
         document.getElementById('pdfDias').innerText = diasTexto;
 
-        // Configurar el enlace automático de correo electrónico
-        const asunto = encodeURIComponent('Propuesta Económica de Servicios SST — Pharmony');
-        const cuerpo = encodeURIComponent(`Estimado equipo de ${cliente},\n\nEs un gusto saludarlos. Adjunto a este medio hacemos llegar la propuesta económica revisada para la gestión integral de Salud Ocupacional en sus instalaciones.\n\nInversión Mensual Total: S/. ${precioTotalGeneral.toFixed(2)} (Sujeto a crédito a ${diasTexto} días).\n\nQuedamos atentos a sus comentarios para coordinar el inicio de actividades.\n\nAtentamente,\nEquipo Comercial\nPharmony Seguridad y Salud Laboral`);
-        document.getElementById('btnEmail').href = `mailto:?subject=${asunto}&body=${cuerpo}`;
+        // 7. Generación de Correo Automatizado con Jefatura de Administración y Finanzas
+        const asuntoCor = encodeURIComponent(`Propuesta Técnico-Económica HSEQ — Pharmony (${cliente})`);
+        const cuerpoCor = encodeURIComponent(`Estimado equipo de ${cliente},\n\nUn gusto saludarlos. Atendiendo los requerimientos y compromisos de su organización bajo la Ley N.° 29783, adjuntamos nuestra proforma formal corporativa codificada bajo el registro ${codigoGenerado}.\n\nEste plan integral cubre de forma estricta las funciones de vigilancia médica requeridas por SUNAFIL, operación técnica del tópico e incorpora los beneficios integrados de soporte psicosocial y tamizajes.\n\nInversión Mensual Estructurada: S/. ${precioTotalGeneral.toFixed(2)} (Neto sin IGV, condiciones de crédito a ${diasTexto} días).\n\nQuedamos a su entera disposición para cualquier aclaración técnica.\n\nAtentamente,\nJefatura de Administración y Finanzas\nPHARMONY E.I.R.L.\nRUC: 20614205351`);
+        document.getElementById('btnEmail').href = `mailto:?subject=${asuntoCor}&body=${cuerpoCor}`;
     }
 
     function descargarPDF() {
         const element = document.getElementById('propuesta-pdf');
-        const clienteNom = document.getElementById('cliente').value;
+        const clienteNom = document.getElementById('cliente').value || "Cliente";
+        const codigoDoc = document.getElementById('pdfCodigo').innerText;
+        
         const opt = {
-            margin:       10,
-            filename:     `Propuesta_Pharmony_${clienteNom}.pdf`,
+            margin:       12,
+            filename:     `Proforma_Corporativa_Pharmony_${clienteNom}_${codigoDoc}.pdf`,
             image:        { type: 'jpeg', quality: 0.98 },
-            html2canvas:  { scale: 2 },
+            html2canvas:  { 
+                scale: 2, 
+                logging: false,
+                useCORS: false,
+                letterRendering: true
+            },
             jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
         };
-        html2pdf().set(opt).from(element).save();
+        
+        html2pdf().from(element).set(opt).save();
     }
 
     window.onload = calcularTodo;
