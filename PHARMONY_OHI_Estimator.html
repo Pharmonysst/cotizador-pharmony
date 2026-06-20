@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PHARMONY OHI™ — Master Enterprise Estimator</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        body { font-family: 'Arial', sans-serif; background-color: #f0f4f8; color: #333; margin: 0; padding: 20px; line-height: 1.35; }
+        .container { max-width: 1300px; margin: 0 auto; background: #ffffff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
+        h1 { color: #0f2d59; border-bottom: 3px solid #3182ce; padding-bottom: 10px; margin-top: 0; font-size: 1.6em; letter-spacing: 0.5px; }
+        h2 { color: #2b6cb0; margin-top: 15px; font-size: 1.05em; border-bottom: 1px solid #e2e8f0; padding-bottom: 5px; text-transform: uppercase; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 20px; margin-bottom: 20px; }
+        .card { background: #f8fafc; border: 1px solid #e2e8f0; padding: 18px; border-radius: 6px; }
+        .form-group { margin-bottom: 10px; }
+        .perfil-box { background: #ffffff; border: 1px solid #cbd5e0; padding: 10px; border-radius: 6px; margin-bottom: 8px; }
+        .perfil-header { display: flex; align-items: center; gap: 10px; font-weight: bold; color: #1a202c; }
+        .perfil-details { margin-top: 6px; display: none; background: #f7fafc; padding: 8px; border-radius: 4px; border-left: 3px solid #3182ce; }
+        .sub-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 4px; }
+        label { display: block; font-weight: bold; margin-bottom: 3px; color: #4a5568; font-size: 0.8em; }
+        select, input[type="number"], input[type="text"] { width: 100%; padding: 6px; border: 1px solid #cbd5e0; border-radius: 4px; box-sizing: border-box; font-size: 0.85em; }
+        .checkbox-group { display: flex; align-items: center; gap: 8px; margin-top: 6px; }
+        .checkbox-group label { margin-bottom: 0; cursor: pointer; font-size: 0.85em; }
+        
+        .banner-alerta-legal { display: none; background-color: #fff5f5; border: 2px solid #e53e3e; color: #c53030; padding: 12px; border-radius: 6px; margin-top: 15px; font-size: 0.85em; }
+        
+        /* MAQUETACIÓN PDF */
+        #propuesta-pdf { background: white; padding: 35px; border: 1px solid #cbd5e0; margin-top: 25px; border-radius: 4px; box-sizing: border-box; }
+        .tabla-cabecera { width: 100%; border-collapse: collapse; margin-bottom: 15px; table-layout: fixed; }
+        .tabla-cabecera td { border: 1px solid #0f2d59; padding: 8px; vertical-align: middle; }
+        .cabecera-logo { width: 25%; text-align: center; font-weight: bold; font-size: 1.15em; color: #0f2d59; letter-spacing: 1px; }
+        .cabecera-titulo { width: 45%; text-align: center; font-weight: bold; color: #0f2d59; font-size: 0.9em; line-height: 1.3; }
+        .cabecera-meta { width: 30%; font-size: 0.75em; padding: 0 !important; }
+        .subtabla-meta { width: 100%; border-collapse: collapse; }
+        .subtabla-meta td { border: none !important; border-bottom: 1px solid #0f2d59 !important; padding: 5px !important; font-size: 0.9em; }
+        .subtabla-meta tr:last-child td { border-bottom: none !important; }
+        
+        table.tabla-costos { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 0.8em; }
+        table.tabla-costos th, table.tabla-costos td { border: 1px solid #cbd5e0; padding: 7px 9px; text-align: left; }
+        table.tabla-costos th { background-color: #0f2d59; color: white; text-transform: uppercase; font-size: 0.82em; }
+        
+        .box-seccion { background-color: #f8fafc; border: 1px solid #e2e8f0; padding: 12px; margin-top: 12px; border-radius: 4px; font-size: 0.8em; clear: both; }
+        .box-seccion strong { color: #0f2d59; }
+        .box-seccion ul { margin: 5px 0 0 0; padding: 0; list-style: none; }
+        .box-seccion li { margin-bottom: 5px; line-height: 1.35; }
+
+        /* CUADRO DE EQUIPAMIENTO DEL TÓPICO */
+        .topico-grid { display: flex; flex-wrap: wrap; gap: 5px 10px; margin-top: 8px; }
+        .topico-item { flex: 0 0 47%; background: #ffffff; border: 1px solid #cbd5e0; border-left: 3px solid #2b6cb0; border-radius: 4px; padding: 5px 8px; font-size: 0.95em; box-sizing: border-box; }
+        .topico-item::before { content: "✓ "; color: #2b6cb0; font-weight: bold; }
+        .sub-condicion { font-weight: bold; color: #2b6cb0; margin: 8px 0 2px 0; text-transform: uppercase; font-size: 0.92em; }
+
+        .actions-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
+        .btn { padding: 12px; border: none; border-radius: 4px; cursor: pointer; font-size: 0.95em; font-weight: bold; text-align: center; text-decoration: none; }
+        .btn-pdf { background-color: #e53e3e; color: white; }
+        .btn-email { background-color: #0f2d59; color: white; }
+        .btn:hover { opacity: 0.9; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>PHARMONY OHI™ — Panel de Control · Ecosistema Master v2.8</h1>
+    
+    <div class="grid">
+        <!-- BLOQUE 1: PARAMETRIZACIÓN DEL CLIENTE -->
+        <div class="card">
+            <h2>1. Configuración de Cuenta & Riesgo</h2>
+            <div class="form-group">
+                <label for="cliente">Razón Social del Cliente</label>
+                <input type="text" id="cliente" value="" placeholder="Ingrese la razón social del cliente" oninput="calcularTodo()">
+            </div>
+            <div class="sub-grid">
+                <div class="form-group">
+                    <label for="elaborado_por">Elaborado por (su nombre)</label>
+                    <input type="text" id="elaborado_por" value="" placeholder="Nombre de quien cotiza" oninput="calcularTodo()">
+                </div>
+                <div class="form-group">
+                    <label for="contacto_comercial">Contacto comercial</label>
+                    <input type="text" id="contacto_comercial" value="" placeholder="Nombre / teléfono del contacto" oninput="calcularTodo()">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="cliente_email">Correo del cliente (destinatario del envío)</label>
+                <input type="text" id="cliente_email" value="" placeholder="correo@empresacliente.com" oninput="calcularTodo()">
+            </div>
+            <div class="sub-grid">
+                <div class="form-group">
+                    <label for="sector">Sector Corporativo (Matriz de Riesgo)</label>
+                    <select id="sector" onchange="calcularTodo()">
+                        <option value="Minería">Minería (Riesgo Crítico)</option>
+                        <option value="Gas y Petróleo">Gas y Petróleo (Riesgo Crítico)</option>
+                        <option value="Transporte de Personal">Transporte de Personal (Riesgo Crítico)</option>
+                        <option value="Pesquero">Sector Pesquero (Riesgo Crítico)</option>
+                        <option value="Comercio" selected>Comercio / Almacenes (Riesgo Medio)</option>
+                        <option value="Alimentario">Sector Alimentario (Riesgo Medio)</option>
+                        <option value="Entretenimiento">Entretenimiento / Hoteles (Riesgo Medio)</option>
+                        <option value="Teletrabajo">Teletrabajo (Riesgo Mínimo)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="version">Versión Comercial</label>
+                    <select id="version" onchange="calcularTodo()">
+                        <option value="1">Versión 1</option>
+                        <option value="2" selected>Versión 2 (OHI™)</option>
+                        <option value="3">Versión 3</option>
+                        <option value="4">Versión 4</option>
+                        <option value="5">Versión 5</option>
+                    </select>
+                </div>
+            </div>
+            <div class="sub-grid">
+                <div class="form-group">
+                    <label for="sedes">N.° Sedes Totales</label>
+                    <input type="number" id="sedes" value="1" min="1" oninput="calcularTodo()">
+                </div>
+                <div class="form-group">
+                    <label for="sedes_topico">Sedes que Requieren Tópico Fijo</label>
+                    <input type="number" id="sedes_topico" value="1" min="0" oninput="calcularTodo()">
+                </div>
+            </div>
+            <div class="sub-grid">
+                <div class="form-group">
+                    <label for="trabajadores">N.° Total Colaboradores</label>
+                    <input type="number" id="trabajadores" value="550" min="1" oninput="calcularTodo()">
+                </div>
+                <div class="form-group">
+                    <label for="credito">Términos de Pago</label>
+                    <select id="credito" onchange="calcularTodo()">
+                        <option value="1.000">30 días netos</option>
+                        <option value="1.0075">45 días (+0.75%)</option>
+                        <option value="1.015">60 días (+1.50%)</option>
+                    </select>
+                </div>
+            </div>
+            <div class="checkbox-group" style="margin-top:6px; background:#fffbeb; border:1px solid #f6e05e; border-radius:6px; padding:6px;">
+                <input type="checkbox" id="autorizar_bajo_minimo" onchange="calcularTodo()">
+                <label for="autorizar_bajo_minimo">🔓 Autorizar precios por debajo del mínimo (aprobado por Operaciones)</label>
+            </div>
+        </div>
+
+        <!-- BLOQUE 2: ESTRUCTURA MÉDICA & SALUD -->
+        <div class="card">
+            <h2>2. Profesionales de la Salud & Bienestar (Por Día/Semana)</h2>
+            
+            <div class="perfil-box">
+                <div class="perfil-header">
+                    <input type="checkbox" id="chk_medico" checked onchange="togglePerfil('medico')">
+                    <label for="chk_medico">Médico Ocupacional</label>
+                </div>
+                <div id="group_medico" class="perfil-details" style="display: block;">
+                    <div class="sub-grid">
+                        <div>
+                            <label>Inversión por Día/Semana (Min S/.1800)</label>
+                            <input type="number" id="sueldo_medico" value="1800" min="1800" oninput="calcularTodo()">
+                        </div>
+                        <div>
+                            <label>Días/Semana</label>
+                            <input type="number" id="dias_medico" value="2" min="1" max="6" oninput="calcularTodo()">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="perfil-box">
+                <div class="perfil-header">
+                    <input type="checkbox" id="chk_enferm_esp" checked onchange="togglePerfil('enferm_esp')">
+                    <label for="chk_enferm_esp">Enfermero(a) Universitario Ocupacional</label>
+                </div>
+                <div id="group_enferm_esp" class="perfil-details" style="display: block;">
+                    <div class="sub-grid">
+                        <div>
+                            <label>Inversión por Día/Semana (Min S/.1100)</label>
+                            <input type="number" id="sueldo_enferm_esp" value="1100" min="1100" oninput="calcularTodo()">
+                        </div>
+                        <div>
+                            <label>Días/Semana</label>
+                            <input type="number" id="dias_enferm_esp" value="1" min="1" max="6" oninput="calcularTodo()">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="perfil-box">
+                <div class="perfil-header">
+                    <input type="checkbox" id="chk_enferm_asist" onchange="togglePerfil('enferm_asist')">
+                    <label for="chk_enferm_asist">Enfermero(a) Asistencial (Tópico / Emergencias)</label>
+                </div>
+                <div id="group_enferm_asist" class="perfil-details">
+                    <div class="sub-grid">
+                        <div>
+                            <label>Inversión por Día/Semana (Min S/.850)</label>
+                            <input type="number" id="sueldo_enferm_asist" value="850" min="850" oninput="calcularTodo()">
+                        </div>
+                        <div>
+                            <label>Días/Semana</label>
+                            <input type="number" id="dias_enferm_asist" value="6" min="1" max="6" oninput="calcularTodo()">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="perfil-box">
+                <div class="perfil-header">
+                    <input type="checkbox" id="chk_bienestar" onchange="togglePerfil('bienestar')">
+                    <label for="chk_bienestar">Especialista en Bienestar Social / Trabajadora Social</label>
+                </div>
+                <div id="group_bienestar" class="perfil-details">
+                    <div class="sub-grid">
+                        <div>
+                            <label>Inversión Base Mensual Completa</label>
+                            <input type="number" id="sueldo_bienestar" value="4500" min="4500" oninput="calcularTodo()">
+                        </div>
+                        <div>
+                            <label>Días/Semana (Se prorratea de 5 días)</label>
+                            <input type="number" id="dias_bienestar" value="1" min="1" max="5" oninput="calcularTodo()">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="perfil-box">
+                <div class="perfil-header">
+                    <input type="checkbox" id="chk_psico" onchange="togglePerfil('psico')">
+                    <label for="chk_psico">Psicología Ocupacional (Flexible / Adicional)</label>
+                </div>
+                <div id="group_psico" class="perfil-details">
+                    <div class="sub-grid">
+                        <div>
+                            <label>Tipo de Gestión</label>
+                            <select id="tipo_psico" onchange="calcularTodo()">
+                                <option value="jornada">Por Jornada Completa (S/. 150)</option>
+                                <option value="horas">Por Horas Abiertas (S/. 90 / hr)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label id="lbl_cant_psico">Cantidad (Jornadas o Horas)</label>
+                            <input type="number" id="cant_psico" value="1" min="1" oninput="calcularTodo()">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- BLOQUE 3: ESTRUCTURA DE INGENIERÍA SSOMA & SIG -->
+        <div class="card">
+            <h2>3. Ecosistema de Ingeniería SSOMA & SIG (Asignación Mensual Fija)</h2>
+            <p style="font-size:0.75em; color:#718096; margin-top:-5px; margin-bottom:10px;">Estructuras de personal técnico senior cotizados bajo tarifa plana mensual corporativa:</p>
+            
+            <div class="checkbox-group" style="margin-bottom: 6px;">
+                <input type="checkbox" id="chk_ing_soma" onchange="calcularTodo()">
+                <label for="chk_ing_soma"><strong>Ingeniero / Supervisor SSOMA Colegiado</strong> (S/. 7,500/mes)</label>
+            </div>
+
+            <div class="checkbox-group" style="margin-bottom: 6px;">
+                <input type="checkbox" id="chk_asist_soma" onchange="calcularTodo()">
+                <label for="chk_asist_soma"><strong>Asistente SSOMA In Situ</strong> (S/. 3,800/mes)</label>
+            </div>
+
+            <div class="checkbox-group" style="margin-bottom: 6px;">
+                <input type="checkbox" id="chk_sig" onchange="calcularTodo()">
+                <label for="chk_sig"><strong>Consultor SIG / Ingeniero Ambiental</strong> (S/. 5,000/mes)</label>
+            </div>
+
+            <div class="checkbox-group" style="margin-bottom: 6px;">
+                <input type="checkbox" id="chk_geologo" onchange="calcularTodo()">
+                <label for="chk_geologo"><strong>Geólogo de Seguridad y Geotecnia</strong> (S/. 11,500/mes)</label>
+            </div>
+        </div>
+
+        <!-- BLOQUE 4: ADICIONALES Y CAPACITACIONES -->
+        <div class="card">
+            <h2>4. Capacitaciones Extras & Módulos Logísticos</h2>
+            <div class="sub-grid">
+                <div class="form-group">
+                    <label>Capacitaciones Adicionales (N.° de horas)</label>
+                    <input type="number" id="cap_horas" value="0" min="0" oninput="calcularTodo()">
+                </div>
+                <div class="form-group">
+                    <label>Modalidad</label>
+                    <select id="cap_modalidad" onchange="calcularTodo()">
+                        <option value="220">Virtual (S/. 220 / hr)</option>
+                        <option value="260">Presencial (S/. 260 / hr)</option>
+                    </select>
+                </div>
+            </div>
+            <div class="checkbox-group">
+                <input type="checkbox" id="cap_cert_ind" onchange="calcularTodo()">
+                <label for="cap_cert_ind">Emitir Certificados Individuales (S/. 0.30 por colaborador)</label>
+            </div>
+            <hr style="border:0; border-top:1px solid #e2e8f0; margin:10px 0;">
+            <div class="checkbox-group">
+                <input type="checkbox" id="implementacion_topico" onchange="calcularTodo()">
+                <label for="implementacion_topico">Implementación inicial de Tópico — equipamiento completo (S/. 1,300, pago único)</label>
+            </div>
+            <div class="checkbox-group">
+                <input type="checkbox" id="residuos" onchange="calcularTodo()">
+                <label for="residuos">Gestión de Residuos Biocontaminados (S/. 200 cada 3 meses · opcional)</label>
+            </div>
+            <div class="checkbox-group">
+                <input type="checkbox" id="fee_transporte" onchange="calcularTodo()">
+                <label for="fee_transporte">Fee de Transporte y Despliegue (aplica solo fuera de Lima)</label>
+            </div>
+        </div>
+    </div>
+
+    <!-- BANNER ROJO SUNAFIL -->
+    <div id="alertaLegalMinsa" class="banner-alerta-legal">
+        <strong>⚠️ ALERTA DE INCUMPLIMIENTO NORMATIVO (R.M. 312-2011-MINSA):</strong><br>
+        Su organización registra <span id="alertTrabajadores">0</span> colaboradores. La legislación peruana estipula que toda empresa con <strong>500 o más trabajadores</strong> tiene la obligación de contar con un Médico Ocupacional por un mínimo de <strong>5 días a la semana de forma Presencial</strong>. Su configuración actual expone a la empresa a severas multas ante SUNAFIL.
+    </div>
+
+    <!-- BANNER PRECIO BAJO EL MÍNIMO -->
+    <div id="alertaPrecioMinimo" style="display:none; background-color:#fffaf0; border:2px solid #dd6b20; color:#9c4221; padding:12px; border-radius:6px; margin-top:15px; font-size:0.85em;">
+        <strong>⚠️ PRECIO POR DEBAJO DEL MÍNIMO:</strong> <span id="detallePrecioMinimo"></span> Para aplicar un precio menor al mínimo se requiere <strong>aprobación de Operaciones</strong>. Marca la casilla <em>"Autorizar precios por debajo del mínimo"</em> en el Bloque 1 para habilitarlo.
+    </div>
+    <div id="avisoPrecioAutorizado" style="display:none; background-color:#f0fff4; border:2px solid #38a169; color:#276749; padding:10px; border-radius:6px; margin-top:15px; font-size:0.85em;">
+        ✅ <strong>Precios reducidos autorizados por Operaciones.</strong> Se están aplicando tarifas por debajo del mínimo estándar.
+    </div>
+
+    <!-- DOCUMENTO PDF GENERADO -->
+    <div id="propuesta-pdf">
+        <table class="tabla-cabecera">
+            <tr>
+                <td class="cabecera-logo">
+                    <img src="data:image/png;base64,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cmoy5PilaphpTtAiIibIiInkgAIUgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/9k=" alt="PHARMONY" style="max-width:100%; max-height:70px; height:auto; display:block; margin:0 auto;">
+                    <span style="font-size:0.6em; display:block; font-weight:normal; color:#4a5568; margin-top:3px;">OCCUPATIONAL HEALTH INTELLIGENCE</span>
+                </td>
+                <td class="cabecera-titulo">
+                    ESTIMACIÓN DE INVERSIÓN CORPORATIVA: SISTEMA INTEGRAL OHI™<br>
+                    <span style="font-size:0.75em; font-weight:normal; color:#4a5568;" id="pdfSubtitulo">Cliente: —</span>
+                </td>
+                <td class="cabecera-meta">
+                    <table class="subtabla-meta">
+                        <tr>
+                            <td style="font-weight:bold; width:35%;">Código:</td>
+                            <td id="pdfCodigo" style="color:#0f2d59; font-weight:bold; font-size:0.85em;">—</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight:bold;">Versión:</td>
+                            <td id="pdfVersion" style="color:#0f2d59; font-weight:bold;">—</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight:bold;">Sector:</td>
+                            <td id="pdfSector" style="color:#4a5568;">—</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+        
+        <p style="font-size: 0.82em; margin: 8px 0;"><strong>PHARMONY SERVICIOS DE SEGURIDAD, SALUD Y MEDIO AMBIENTE E.I.R.L.</strong> (RUC: 20614205351), presenta los términos de inversión económica para el despliegue del Sistema Integrado de Gestión bajo la Ley N.° 29783:</p>
+        
+        <div style="background-color: #0f2d59; color: white; padding: 8px; border-radius: 4px; font-style: italic; font-size: 0.82em; text-align: center; margin-bottom: 12px; font-weight: bold;">
+            "Su organización no está comprando horas médicas aisladas; está integrando un sistema tecnológico y profesional de inteligencia de salud para proteger la continuidad de su operación."
+        </div>
+
+        <!-- JEFATURAS REESTRUCTURADAS -->
+        <div class="box-seccion" style="border-left: 4px solid #0f2d59;">
+            <strong>👥 DIRECCIONAMIENTO TÉCNICO Y COMITÉ INTERDISCIPLINARIO HSEQ (SIG):</strong>
+            <p style="margin: 3px 0 6px 0; font-size: 0.95em;">La operación cuenta con el respaldo, gobernanza y auditoría en tiempo real de nuestro comité de Jefaturas Especializadas:</p>
+            <ul style="font-size:0.95em;">
+                <li>• <strong>Vigilancia Médica e Inteligencia de Salud (Health):</strong> Supervisa la parte médica el <strong>Dr. Pedro Pereda</strong>, especialista en Salud Ocupacional, a cargo de los programas de vigilancia médica y la analítica de salud de la población trabajadora.</li>
+                <li>• <strong>Ingeniería, Seguridad y Calidad Operativa (Safety &amp; Quality):</strong> Liderado por el <strong>Ing. de Minas Billy Seminario</strong>, responsable de la gestión del SGSST, la ingeniería de seguridad y el control de calidad operativa conforme a la Ley N.° 29783.</li>
+                <li>• <strong>Gestión Ambiental y Bioseguridad (Environment):</strong> A cargo del <strong>Ing. SOMA Eduardo Sánchez</strong>, quien vigila los monitoreos ocupacionales, la gestión ambiental, el manejo de residuos biocontaminados y la bioseguridad.</li>
+            </ul>
+        </div>
+
+        <!-- BENEFICIO GRATUITO EXCLUSIVO (ACTUALIZADO DINÁMICAMENTE) -->
+        <div id="boxBeneficios" class="box-seccion" style="border-left: 4px solid #38a169; background-color: #f0fff4;">
+            <strong style="color: #276749;">🎁 BENEFICIO EXCLUSIVO (PLUS PHARMONY):</strong>
+            <p style="margin: 3px 0 0 0; color: #276749; line-height: 1.4;">
+                • Pharmony otorga de manera <strong>100% gratuita 2 capacitaciones anuales in situ</strong> para el cumplimiento normativo estricto ante SUNAFIL, dictadas por nuestro equipo médico, nutricional o psicóloga ocupacional.<br>
+                • <strong>Asignación Libre de Psicología:</strong> Se otorga una bolsa de <strong id="lblPsicoGratis">4</strong> horas mensuales de la psicóloga ocupacional totalmente gratuitas, que pueden destinarse al <strong>monitoreo de riesgos psicosociales</strong>, generando un ahorro directo a la empresa en el cumplimiento del D.S. 005-2012-TR.<br>
+                • <strong>Campaña de Tamizaje de Salud:</strong> Incluye de forma gratuita una campaña anual de despistaje in situ (Toma de Glucosa, Presión Arterial, Peso, Talla e IMC) para el programa de vigilancia, con entrega de un Reporte Epidemiológico consolidado con los hallazgos.
+            </p>
+        </div>
+
+        <!-- TABLA DE COSTOS TRANSPARENTE -->
+        <table class="tabla-costos">
+            <thead>
+                <tr>
+                    <th style="width: 15%; text-align: center;">CÓD. ÍTEM</th>
+                    <th style="width: 50%;">DESCRIPCIÓN DE LA COBERTURA DE SALUD E INGENIERÍA INTELIGENTE</th>
+                    <th style="width: 15%; text-align: center;">MODALIDAD</th>
+                    <th style="width: 20%; text-align: right;">INVERSIÓN NETO</th>
+                </tr>
+            </thead>
+            <tbody id="cuerpoTablaCostos">
+                <!-- Inyección Dinámica por Script -->
+            </tbody>
+        </table>
+
+        <!-- SERVICIO DE TÓPICO MÉDICO IN SITU (SOLO VISIBLE SI HAY TÓPICO SELECCIONADO) -->
+        <div id="boxTopico" class="box-seccion" style="border-left: 4px solid #2b6cb0; background-color: #f7fbff; margin-top:15px; display:none;">
+            <strong>🏥 SERVICIO DE TÓPICO MÉDICO IN SITU — ALCANCE TÉCNICO:</strong>
+            <p style="margin: 4px 0 0 0; line-height: 1.4;">PHARMONY brinda el Servicio de Tópico Médico In Situ, que funciona en el espacio físico proporcionado por la empresa, orientado a la atención primaria, soporte asistencial y respuesta inicial ante eventos de salud ocupacional. El tópico permanece operativo durante toda la jornada del servicio médico ocupacional, con respaldo médico permanente bajo la Dirección Médica de PHARMONY, lo que permite resolver eventos de salud en sitio y reducir significativamente las derivaciones innecesarias a establecimientos externos. Incluye el suministro y reposición mensual de insumos y medicamentos de uso habitual, conforme al reporte de consumo documentado.</p>
+            <div class="sub-condicion">Equipamiento esencial implementado:</div>
+            <div class="topico-grid">
+                <div class="topico-item">Camilla clínica con respaldar ajustable</div>
+                <div class="topico-item">Báscula con tallímetro</div>
+                <div class="topico-item">Cinta métrica</div>
+                <div class="topico-item">Esfigmomanómetro (mercurio o digital) con manguitos de distintos tamaños</div>
+                <div class="topico-item">Martillo de reflejos</div>
+                <div class="topico-item">Termómetro digital</div>
+                <div class="topico-item">Carrito de curaciones movilizable</div>
+                <div class="topico-item">Lámpara fija de examen</div>
+                <div class="topico-item">Linterna de mano para examen clínico</div>
+                <div class="topico-item">Porta sueros metálico</div>
+                <div class="topico-item">Materiales para curaciones menores</div>
+                <div class="topico-item">Estantería modular para almacenamiento de insumos</div>
+                <div class="topico-item">Contenedor de seguridad para residuos biológicos</div>
+                <div class="topico-item">Botiquín de primeros auxilios (gestión y control)</div>
+            </div>
+        </div>
+
+        <!-- CONDICIONES COMERCIALES GENERALES (DEL WORD OFICIAL) -->
+        <div class="box-seccion" style="border-left: 4px solid #4a5568; background-color: #f7fafc; margin-top:15px;">
+            <strong>📜 CONDICIONES COMERCIALES GENERALES:</strong>
+            <ul style="font-size:0.9em; padding-left:15px; margin-top:5px; list-style-type: square;">
+                <li>Entrega de informe virtual a full color con evidencias recabadas, cumpliendo la normativa vigente.</li>
+                <li>En caso de aplazamiento del servicio, favor de confirmar con anticipación para el envío de una nueva cotización actualizada.</li>
+                <li><strong>No captación de personal:</strong> El cliente se compromete a no contratar, directa ni indirectamente, al personal asignado por PHARMONY durante la vigencia del contrato y hasta 12 meses posteriores a su culminación. El incumplimiento generará una penalidad equivalente a 3 meses del valor del servicio contratado.</li>
+                <li><strong>Periodicidad del servicio:</strong> La presente propuesta contempla la prestación de los profesionales de manera mensual.</li>
+                <li><strong>Vigencia del contrato:</strong> Doce (12) meses contados a partir de la emisión de la orden de compra, renovándose automática y sucesivamente por períodos idénticos, salvo voluntad expresa en contrario manifestada por escrito con al menos treinta (30) días de anticipación a la fecha de terminación o de la prórroga en curso.</li>
+                <li><strong>Entrega de informe mensual:</strong> Se entregará un informe mensual de las actividades realizadas en un plazo máximo de 05 días hábiles posteriores a la ejecución.</li>
+                <li>El personal asignado mantiene vínculo laboral con PHARMONY, contando con cobertura de salud, así como SCTR Salud y Pensión, conforme a la normativa vigente.</li>
+            </ul>
+        </div>
+
+        <!-- CONDICIONES DEL SERVICIO (CLIENTE / PHARMONY) -->
+        <div class="box-seccion" style="border-left: 4px solid #4a5568; background-color: #f7fafc; margin-top:12px;">
+            <strong>🤝 CONDICIONES DEL SERVICIO:</strong>
+            <div class="sub-condicion">Del cliente</div>
+            <ul style="font-size:0.9em; padding-left:15px; margin-top:2px; list-style-type: square;">
+                <li>Comunicar con anticipación las exigencias de seguridad, salud, medio ambiente y demás normas internas que debe cumplir el personal dentro de sus instalaciones.</li>
+                <li>Informar oportunamente sobre los peligros y riesgos reales o potenciales (radiación, materiales tóxicos o nocivos, explosivos, contaminación ambiental, venenos, etc.).</li>
+                <li>Brindar las facilidades para el ingreso a sus instalaciones. Se emitirá con anticipación la relación del personal.</li>
+            </ul>
+            <div class="sub-condicion">De PHARMONY</div>
+            <ul style="font-size:0.9em; padding-left:15px; margin-top:2px; list-style-type: square;">
+                <li>Ejecutar el servicio según la propuesta técnico–económica y el plan de trabajo aprobado por el cliente.</li>
+                <li>Entregar el informe del servicio prestado dentro de los plazos pactados.</li>
+                <li>Cumplir estrictamente las políticas de seguridad, salud en el trabajo y ambiente que establezca el cliente.</li>
+                <li>El personal contará con herramientas de trabajo, computador y EPP (chaleco y zapatos de seguridad).</li>
+                <li>El personal asignado cuenta con cobertura SCTR Salud y Pensión, además de seguro de salud.</li>
+            </ul>
+        </div>
+
+        <!-- GARANTÍA DE RESPUESTA MÉDICA -->
+        <div class="box-seccion" style="border-left: 4px solid #38a169; background-color: #f0fff4; margin-top:12px;">
+            <strong style="color:#276749;">🛡️ GARANTÍA PHARMONY DE RESPUESTA MÉDICA Y SOPORTE ANTE CONTINGENCIAS:</strong>
+            <ul style="font-size:0.9em; padding-left:15px; margin-top:5px; list-style-type: square; color:#276749;">
+                <li>Respuesta médica y técnica especializada en un plazo máximo de 24 horas ante contingencias u observaciones.</li>
+                <li>Acompañamiento técnico para el levantamiento de observaciones derivadas de fiscalizaciones SUNAFIL.</li>
+                <li>Dirección y supervisión médica especializada durante toda la ejecución del servicio.</li>
+                <li>Activación y ejecución de monitoreos ocupacionales en un plazo no mayor a 10 días calendario, de ser requerido.</li>
+                <li>Reducción de riesgos legales y continuidad operativa para la empresa.</li>
+            </ul>
+        </div>
+
+        <!-- INSTRUCCIÓN DE ACEPTACIÓN COMERCIAL -->
+        <div class="box-seccion" style="background-color: #edf2f7; border: 1px solid #cbd5e0; margin-top: 15px;">
+            <strong>📩 INSTRUCCIONES DE ACTIVACIÓN DEL SERVICIO:</strong>
+            <p style="margin: 4px 0 0 0; line-height: 1.4;">De encontrarse conforme con los términos de inversión expuestos para el despliegue del Ecosistema OHI™, agradeceremos formalizar la atención mediante el envío de su <strong>Orden de Servicio (OS), Orden de Compra (OC) o la presente propuesta firmada</strong> al área central de contrataciones:<br>
+            📧 Correo Central: <strong>comercialperu@pharmonysst.com</strong> | 📱 Coordinación Comercial: <strong>919746268</strong></p>
+        </div>
+
+        <p style="margin-top:12px; font-size: 0.8em; color:#0f2d59;">
+            <strong>Elaborado por:</strong> <span id="pdfElaborador">—</span> &nbsp;·&nbsp; <strong>Contacto comercial:</strong> <span id="pdfContacto">—</span>
+        </p>
+
+        <p style="margin-top:12px; font-size: 0.72em; color: #4a5568; line-height: 1.3;">
+            <strong>Condiciones Financieras:</strong> Precios expresados en Soles (S/.) netos sin IGV. Crédito aprobado a <span id="pdfDias">30</span> días netos previa conformidad del periodo mensual. Gastos de traslados a provincia no incluidos (se facturan al costo sustentado). Vigencia comercial de la proforma: 30 días calendarios.
+        </p>
+    </div>
+
+    <div class="actions-grid">
+        <button class="btn btn-pdf" onclick="descargarPDF()">📥 Descargar Propuesta Comercial Master (PDF)</button>
+        <a id="btnEmail" class="btn btn-email" href="#">✉️ Notificar por Correo Institucional</a>
+    </div>
+
+    <!-- ===================== PANEL INTERNO (USO INTERNO, NO SALE EN EL PDF) ===================== -->
+    <div id="panelComisionWrap" style="margin-top:22px; border:2px dashed #b7791f; border-radius:8px; padding:16px; background:#fffbeb;">
+        <strong style="color:#92400e;">📋 Información para el Contacto Comercial</strong>
+        <p style="font-size:0.8em; color:#92400e; margin:4px 0 10px 0;">Esta sección <strong>no aparece en el PDF</strong> ni se exporta. Ábrela solo cuando NO estés proyectando frente al cliente.</p>
+        <button id="btnVerComision" class="btn" style="background:#b7791f; color:#fff; max-width:320px;" onclick="abrirComision()">🔓 Abrir información comercial (requiere clave)</button>
+
+        <div id="panelComision" style="display:none; margin-top:14px;">
+            <div style="display:flex; flex-wrap:wrap; gap:10px; margin-bottom:14px;">
+                <div style="flex:1; min-width:150px; background:#fff; border:1px solid #cbd5e0; border-radius:6px; padding:10px; text-align:center;">
+                    <div style="font-size:0.72em; color:#718096; text-transform:uppercase;">Venta neta</div>
+                    <div id="pcVenta" style="font-size:1.15em; font-weight:bold; color:#0f2d59;">S/. 0.00</div>
+                </div>
+                <div style="flex:1; min-width:150px; background:#fff; border:1px solid #cbd5e0; border-radius:6px; padding:10px; text-align:center;">
+                    <div style="font-size:0.72em; color:#718096; text-transform:uppercase;">(−) Costos</div>
+                    <div id="pcCosto" style="font-size:1.15em; font-weight:bold; color:#c53030;">S/. 0.00</div>
+                </div>
+                <div style="flex:1; min-width:150px; background:#fff; border:1px solid #cbd5e0; border-radius:6px; padding:10px; text-align:center;">
+                    <div style="font-size:0.72em; color:#718096; text-transform:uppercase;">= Utilidad</div>
+                    <div id="pcUtilidad" style="font-size:1.15em; font-weight:bold; color:#276749;">S/. 0.00</div>
+                </div>
+                <div style="flex:1; min-width:150px; background:#0f2d59; border-radius:6px; padding:10px; text-align:center;">
+                    <div style="font-size:0.72em; color:#cbd5e0; text-transform:uppercase;">Comisión Fabricio (50%)</div>
+                    <div id="pcComision" style="font-size:1.25em; font-weight:bold; color:#fff;">S/. 0.00</div>
+                </div>
+            </div>
+
+            <div class="checkbox-group" style="margin-bottom:8px;">
+                <input type="checkbox" id="chk_edit_costos" onchange="toggleEditCostos()">
+                <label for="chk_edit_costos">✏️ Habilitar edición de costos (referenciales según mercado — ajústalos a tus números reales)</label>
+            </div>
+
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:8px;">
+                <div class="form-group"><label>Médico (costo por día/sem)</label><input type="number" id="cost_medico" value="1400" disabled oninput="calcularTodo()"></div>
+                <div class="form-group"><label>Enfermero ocupacional (día/sem)</label><input type="number" id="cost_enferm_esp" value="900" disabled oninput="calcularTodo()"></div>
+                <div class="form-group"><label>Enfermero asistencial (día/sem)</label><input type="number" id="cost_enferm_asist" value="600" disabled oninput="calcularTodo()"></div>
+                <div class="form-group"><label>Trabajadora social (base mensual /5)</label><input type="number" id="cost_bienestar" value="3500" disabled oninput="calcularTodo()"></div>
+                <div class="form-group"><label>Psicólogo (costo por jornada)</label><input type="number" id="cost_psico_jornada" value="100" disabled oninput="calcularTodo()"></div>
+                <div class="form-group"><label>Psicólogo (costo por hora)</label><input type="number" id="cost_psico_hora" value="50" disabled oninput="calcularTodo()"></div>
+                <div class="form-group"><label>Ingeniero SSOMA (mensual)</label><input type="number" id="cost_ing_soma" value="5500" disabled oninput="calcularTodo()"></div>
+                <div class="form-group"><label>Asistente SSOMA (mensual)</label><input type="number" id="cost_asist_soma" value="2800" disabled oninput="calcularTodo()"></div>
+                <div class="form-group"><label>Consultor SIG / Ambiental (mensual)</label><input type="number" id="cost_sig" value="3000" disabled oninput="calcularTodo()"></div>
+                <div class="form-group"><label>Geólogo (mensual)</label><input type="number" id="cost_geologo" value="7500" disabled oninput="calcularTodo()"></div>
+                <div class="form-group"><label>Tópico mantenimiento (por sede)</label><input type="number" id="cost_topico" value="200" disabled oninput="calcularTodo()"></div>
+                <div class="form-group"><label>Implementación tópico (pago único)</label><input type="number" id="cost_implementacion" value="900" disabled oninput="calcularTodo()"></div>
+                <div class="form-group"><label>Capacitación (costo por hora)</label><input type="number" id="cost_capacitacion" value="120" disabled oninput="calcularTodo()"></div>
+                <div class="form-group"><label>Residuos (costo cada 3 meses)</label><input type="number" id="cost_residuos" value="130" disabled oninput="calcularTodo()"></div>
+                <div class="form-group"><label>Transporte (costo)</label><input type="number" id="cost_transporte" value="100" disabled oninput="calcularTodo()"></div>
+            </div>
+
+            <p style="font-size:0.72em; color:#92400e; margin-top:10px;">Nota: la comisión se calcula sobre la <strong>utilidad</strong> (venta − costos). El IGV y la detracción no se descuentan aquí porque no son costos. Cifra referencial; confírmala con tu contador.</p>
+            <button class="btn" style="background:#718096; color:#fff; max-width:180px; margin-top:6px;" onclick="cerrarComision()">Ocultar panel</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // ⚠️ CLAVE DEL PANEL INTERNO — cámbiala por la que tú quieras (solo esta línea):
+    const CLAVE_INTERNA = "pharmony2026";
+
+    function abrirComision() {
+        const clave = prompt("Ingresa la clave para ver el margen y la comisión (uso interno):");
+        if (clave === null) return; // canceló
+        if (clave === CLAVE_INTERNA) {
+            document.getElementById('panelComision').style.display = 'block';
+            document.getElementById('btnVerComision').style.display = 'none';
+            calcularTodo();
+        } else {
+            alert("Clave incorrecta.");
+        }
+    }
+
+    function cerrarComision() {
+        document.getElementById('panelComision').style.display = 'none';
+        document.getElementById('btnVerComision').style.display = 'block';
+    }
+
+    function toggleEditCostos() {
+        const habilitar = document.getElementById('chk_edit_costos').checked;
+        document.querySelectorAll('#panelComision input[type="number"]').forEach(inp => {
+            inp.disabled = !habilitar;
+        });
+    }
+
+    function togglePerfil(id) {
+        const checkbox = document.getElementById(`chk_${id}`);
+        const group = document.getElementById(`group_${id}`);
+        if(group) group.style.display = checkbox.checked ? 'block' : 'none';
+        calcularTodo();
+    }
+
+    function calcularTodo() {
+        const cliente = document.getElementById('cliente').value || "CLIENTE POR DESIGNAR";
+        const sector = document.getElementById('sector').value;
+        const sedes = parseInt(document.getElementById('sedes').value) || 1;
+        const sedesTopico = parseInt(document.getElementById('sedes_topico').value) || 0;
+        const totalTrabajadores = parseInt(document.getElementById('trabajadores').value) || 1;
+        const factorCredito = parseFloat(document.getElementById('credito').value);
+        const versionSelec = document.getElementById('version').value;
+
+        // Control de precio mínimo con autorización de Operaciones
+        const autorizarBajoMin = document.getElementById('autorizar_bajo_minimo').checked;
+        let hayBajoMinimoSinAutorizar = false;
+        let hayReduccionAutorizada = false;
+        const aplicarMinimo = (valor, minimo) => {
+            if (valor < minimo) {
+                if (autorizarBajoMin) { hayReduccionAutorizada = true; return valor; }
+                hayBajoMinimoSinAutorizar = true;
+                return minimo;
+            }
+            return valor;
+        };
+        
+        // Alerta SUNAFIL
+        const bannerAlerta = document.getElementById('alertaLegalMinsa');
+        const chkMedico = document.getElementById('chk_medico').checked;
+        const diasMedico = parseInt(document.getElementById('dias_medico').value) || 0;
+        if (totalTrabajadores >= 500 && (!chkMedico || diasMedico < 5)) {
+            bannerAlerta.style.display = 'block';
+            document.getElementById('alertTrabajadores').innerText = totalTrabajadores;
+        } else {
+            bannerAlerta.style.display = 'none';
+        }
+
+        // Lógica de Multiplicador por Sector / Riesgo
+        let factorSector = 1.0; 
+        if (["Minería", "Gas y Petróleo", "Transporte de Personal", "Pesquero"].includes(sector)) {
+            factorSector = 1.08; 
+        } else if (sector === "Teletrabajo") {
+            factorSector = 0.92; 
+        }
+
+        const fechaActual = new Date();
+        const cleanClient = cliente.substring(0,3).toUpperCase().replace(/[^A-Z]/g, 'X');
+        const codigoGenerado = `COT-OHI-${cleanClient}-${fechaActual.getFullYear()}${String(fechaActual.getMonth()+1).padStart(2,'0')}${String(fechaActual.getDate()).padStart(2,'0')}-V${versionSelec}`;
+
+        let totalCotizacion = 0;
+        let costoTotal = 0;
+        let htmlCuerpo = "";
+        const C = id => { const el = document.getElementById(id); return el ? (parseFloat(el.value) || 0) : 0; };
+
+        // 1. MÉDICO OCUPACIONAL
+        if (document.getElementById('chk_medico').checked) {
+            let valorDia = parseFloat(document.getElementById('sueldo_medico').value) || 1800;
+            valorDia = aplicarMinimo(valorDia, 1800); 
+            const dias = parseInt(document.getElementById('dias_medico').value) || 1;
+            const subtotal = valorDia * dias * factorSector * factorCredito;
+            totalCotizacion += subtotal;
+            costoTotal += C('cost_medico') * dias;
+            htmlCuerpo += `<tr>
+                <td style="text-align:center; font-weight:bold;">OHI-MED</td>
+                <td><strong>Médico Ocupacional Especializado</strong><br><span style="font-size:0.9em; color:#665;">Asignación prioritaria de Vigilancia Médica de la Salud. Cobertura: ${dias} día(s) por semana.</span></td>
+                <td style="text-align:center;">PRESENCIAL</td>
+                <td style="text-align:right; font-weight:bold;">S/. ${subtotal.toFixed(2)}</td>
+            </tr>`;
+        }
+
+        // 2. ENFERMERO OCUPACIONAL
+        if (document.getElementById('chk_enferm_esp').checked) {
+            let valorDia = parseFloat(document.getElementById('sueldo_enferm_esp').value) || 1100;
+            valorDia = aplicarMinimo(valorDia, 1100);
+            const dias = parseInt(document.getElementById('dias_enferm_esp').value) || 1;
+            const subtotal = valorDia * dias * factorSector * factorCredito;
+            totalCotizacion += subtotal;
+            costoTotal += C('cost_enferm_esp') * dias;
+            htmlCuerpo += `<tr>
+                <td style="text-align:center; font-weight:bold;">OHI-ENF-OCU</td>
+                <td><strong>Enfermero(a) Universitario Especializado en SST</strong><br><span style="font-size:0.9em; color:#665;">Gestión técnica operativa de registros de salud y soporte legal SST. ${dias} día(s)/sem.</span></td>
+                <td style="text-align:center;">PRESENCIAL</td>
+                <td style="text-align:right; font-weight:bold;">S/. ${subtotal.toFixed(2)}</td>
+            </tr>`;
+        }
+
+        // 3. ENFERMERO ASISTENCIAL
+        if (document.getElementById('chk_enferm_asist').checked) {
+            let valorDia = parseFloat(document.getElementById('sueldo_enferm_asist').value) || 850;
+            valorDia = aplicarMinimo(valorDia, 850);
+            const dias = parseInt(document.getElementById('dias_enferm_asist').value) || 1;
+            const subtotal = valorDia * dias * factorSector * factorCredito;
+            totalCotizacion += subtotal;
+            costoTotal += C('cost_enferm_asist') * dias;
+            htmlCuerpo += `<tr>
+                <td style="text-align:center; font-weight:bold;">OHI-ENF-ASI</td>
+                <td><strong>Enfermero(a) Clínico Asistencial (Primeros Auxilios)</strong><br><span style="font-size:0.9em; color:#665;">Soporte de atención inmediata, control de triaje y emergencias de tópico. ${dias} día(s)/sem.</span></td>
+                <td style="text-align:center;">PRESENCIAL</td>
+                <td style="text-align:right; font-weight:bold;">S/. ${subtotal.toFixed(2)}</td>
+            </tr>`;
+        }
+
+        // 4. TRABAJADORA SOCIAL (VARIABLE PRORRATEADA DESDE TARIFA COMPLETA DE 5 DÍAS)
+        if (document.getElementById('chk_bienestar').checked) {
+            let sueldoBase = parseFloat(document.getElementById('sueldo_bienestar').value) || 4500;
+            sueldoBase = aplicarMinimo(sueldoBase, 4500);
+            const dias = parseInt(document.getElementById('dias_bienestar').value) || 1;
+            const subtotal = (sueldoBase / 5) * dias * factorSector * factorCredito;
+            totalCotizacion += subtotal;
+            costoTotal += (C('cost_bienestar') / 5) * dias;
+            htmlCuerpo += `<tr>
+                <td style="text-align:center; font-weight:bold; color:#2b6cb0;">SIG-TRAB-SOC</td>
+                <td><strong>Especialista en Bienestar Social / Trabajadora Social</strong><br><span style="font-size:0.9em; color:#2b6cb0;">Gestión corporativa de descansos médicos, subsidios de ESSALUD y clima laboral. Cobertura: ${dias} día(s)/sem.</span></td>
+                <td style="text-align:center;">PRESENCIAL</td>
+                <td style="text-align:right; font-weight:bold; color:#2b6cb0;">S/. ${subtotal.toFixed(2)}</td>
+            </tr>`;
+        }
+
+        // 5. PSICOLOGÍA FLEXIBLE
+        if (document.getElementById('chk_psico').checked) {
+            const tipo = document.getElementById('tipo_psico').value;
+            const cant = parseInt(document.getElementById('cant_psico').value) || 1;
+            let subtotal = 0;
+            let detalleText = "";
+            
+            if (tipo === 'jornada') {
+                subtotal = 150 * cant;
+                costoTotal += C('cost_psico_jornada') * cant;
+                detalleText = `Gestión Psicosocial Corporativa: ${cant} Jornada(s) Completa(s) al mes.`;
+            } else {
+                subtotal = 90 * cant; 
+                costoTotal += C('cost_psico_hora') * cant;
+                detalleText = `Consultoría de Psicología por Horas Abiertas: ${cant} hora(s) con agenda flexible.`;
+            }
+            subtotal = subtotal * factorCredito;
+            totalCotizacion += subtotal;
+            htmlCuerpo += `<tr>
+                <td style="text-align:center; font-weight:bold;">OHI-PSI</td>
+                <td><strong>Servicios de Psicología Ocupacional (Adicional)</strong><br><span style="font-size:0.9em; color:#665;">${detalleText}</span></td>
+                <td style="text-align:center; text-transform:uppercase;">${tipo}</td>
+                <td style="text-align:right; font-weight:bold;">S/. ${subtotal.toFixed(2)}</td>
+            </tr>`;
+        }
+
+        // 6. MATRIZ SSOMA / SIG MENSUALIZADA FIJA
+        const ssomaItems = [
+            { id: 'ing_soma', cod: 'SIG-ING-SOMA', nombre: 'Ingeniero / Supervisor SSOMA Colegiado', tarifaMensual: 7500, desc: 'Ingeniero Residente responsable del liderazgo normativo y operacional del SGSST en planta/mina.' },
+            { id: 'asist_soma', cod: 'SIG-ASIST-SOMA', nombre: 'Asistente SSOMA In Situ', tarifaMensual: 3800, desc: 'Profesional destacado para el control diario de campo, registros obligatorios y soporte operativo.' },
+            { id: 'sig', cod: 'SIG-CONS-AMB', nombre: 'Consultor SIG / Ingeniero Ambiental', tarifaMensual: 5000, desc: 'Especialista a cargo del mantenimiento del Sistema Integrado de Gestión y auditorías de fiscalización ambiental.' },
+            { id: 'geologo', cod: 'SIG-GEOLOGO', nombre: 'Geólogo de Seguridad y Geotecnia', tarifaMensual: 11500, desc: 'Especialista Senior en control de estabilidad de macizo rocoso y prevención estructural en operaciones mineras.' }
+        ];
+
+        ssomaItems.forEach(item => {
+            if (document.getElementById(`chk_${item.id}`).checked) {
+                const subtotal = item.tarifaMensual * factorSector * factorCredito;
+                totalCotizacion += subtotal;
+                costoTotal += C('cost_' + item.id);
+                htmlCuerpo += `<tr>
+                    <td style="text-align:center; font-weight:bold; color:#2b6cb0;">${item.cod}</td>
+                    <td><strong>${item.nombre}</strong><br><span style="font-size:0.9em; color:#2b6cb0;">${item.desc}</span></td>
+                    <td style="text-align:center;">MENSUAL complet.</td>
+                    <td style="text-align:right; font-weight:bold; color:#2b6cb0;">S/. ${subtotal.toFixed(2)}</td>
+                </tr>`;
+            }
+        });
+
+        // 7. ADICIONALES
+        if (sedesTopico > 0) {
+            const inversionTopicos = sedesTopico * 250.00 * factorCredito;
+            totalCotizacion += inversionTopicos;
+            costoTotal += C('cost_topico') * sedesTopico;
+            htmlCuerpo += `<tr>
+                <td style="text-align:center; font-weight:bold;">OHI-TOP</td>
+                <td><strong>Operación y Mantenimiento de Tópico de Salud Fijo</strong><br><span style="font-size:0.9em; color:#665;">Gestión centralizada de stock, auditoría asistencial implementada en ${sedesTopico} sede(s).</span></td>
+                <td style="text-align:center;">MENSUAL</td>
+                <td style="text-align:right; font-weight:bold;">S/. ${inversionTopicos.toFixed(2)}</td>
+            </tr>`;
+        }
+
+        // IMPLEMENTACIÓN DE TÓPICO (PAGO ÚNICO)
+        if (document.getElementById('implementacion_topico').checked) {
+            const inversionImpl = 1300.00 * factorCredito;
+            totalCotizacion += inversionImpl;
+            costoTotal += C('cost_implementacion');
+            htmlCuerpo += `<tr>
+                <td style="text-align:center; font-weight:bold;">OHI-TOP-IMP</td>
+                <td><strong>Implementación Inicial de Tópico (Equipamiento Completo)</strong><br><span style="font-size:0.9em; color:#665;">Camilla clínica, báscula, esfigmomanómetro, carro de curaciones, lámpara y demás equipamiento esencial.</span></td>
+                <td style="text-align:center; color:#b7791f;">PAGO ÚNICO</td>
+                <td style="text-align:right; font-weight:bold;">S/. ${inversionImpl.toFixed(2)}</td>
+            </tr>`;
+        }
+
+        const capHoras = parseInt(document.getElementById('cap_horas').value) || 0;
+        if (capHoras > 0) {
+            const tarifaCap = parseFloat(document.getElementById('cap_modalidad').value) || 220;
+            const modalidadCap = (tarifaCap >= 260) ? 'PRESENCIAL' : 'VIRTUAL';
+            let inversionCap = capHoras * tarifaCap;
+            if (document.getElementById('cap_cert_ind').checked) {
+                inversionCap += (totalTrabajadores * 0.30);
+            }
+            inversionCap = inversionCap * factorCredito;
+            totalCotizacion += inversionCap;
+            costoTotal += C('cost_capacitacion') * capHoras;
+            htmlCuerpo += `<tr>
+                <td style="text-align:center; font-weight:bold;">OHI-CAP-ADIC</td>
+                <td><strong>Programa de Capacitaciones Adicionales</strong><br><span style="font-size:0.9em; color:#665;">Desarrollo de ${capHoras} hora(s) temáticas con certificación incluida.</span></td>
+                <td style="text-align:center;">${modalidadCap}</td>
+                <td style="text-align:right; font-weight:bold;">S/. ${inversionCap.toFixed(2)}</td>
+            </tr>`;
+        }
+
+        if (document.getElementById('residuos').checked) {
+            const inversionRes = (200.00 / 3) * factorCredito;
+            totalCotizacion += inversionRes;
+            costoTotal += C('cost_residuos') / 3;
+            htmlCuerpo += `<tr>
+                <td style="text-align:center; font-weight:bold;">OHI-ENV-RES</td>
+                <td><strong>Gestión Técnica Normativa de Residuos Biocontaminados</strong><br><span style="font-size:0.9em; color:#665;">Trazabilidad, segregación y disposición. S/.200 cada 3 meses (mensualizado).</span></td>
+                <td style="text-align:center;">C/ 3 MESES</td>
+                <td style="text-align:right; font-weight:bold;">S/. ${inversionRes.toFixed(2)}</td>
+            </tr>`;
+        }
+
+        if (document.getElementById('fee_transporte').checked) {
+            const feeTrans = 150.00 * factorCredito;
+            totalCotizacion += feeTrans;
+            costoTotal += C('cost_transporte');
+            htmlCuerpo += `<tr>
+                <td style="text-align:center; font-weight:bold;">OHI-LOG-TRA</td>
+                <td><strong>Fee de Respaldo Logístico, SCTR y Transporte</strong><br><span style="font-size:0.9em; color:#665;">Despliegue central de equipamiento médico y coberturas de seguro complementario.</span></td>
+                <td style="text-align:center;">MENSUAL</td>
+                <td style="text-align:right; font-weight:bold;">S/. ${feeTrans.toFixed(2)}</td>
+            </tr>`;
+        }
+
+        // LÓGICA AUTOMÁTICA DE HORAS DE PSICOLOGÍA GRATUITAS
+        let horasPsicoGratis = 4;
+        if (totalCotizacion >= 6500 && totalCotizacion <= 10000) {
+            horasPsicoGratis = 8;
+        } else if (totalCotizacion > 10000 && totalCotizacion <= 20000) {
+            horasPsicoGratis = 12;
+        } else if (totalCotizacion > 20000) {
+            horasPsicoGratis = 18; // Tope Máximo
+        }
+        document.getElementById('lblPsicoGratis').innerText = horasPsicoGratis;
+
+        // FILA FINAL DE SUMATORIA
+        htmlCuerpo += `<tr style="font-weight: bold; background-color: #f8fafc; font-size: 1.05em;">
+            <td colspan="3" style="text-align: right; text-transform: uppercase; color:#0f2d59; padding: 10px;">Inversión Total Mensual del Ecosistema OHI™ (Neto sin IGV):</td>
+            <td style="color: #0f2d59; text-align: right; padding: 10px; font-size: 1.1em;">S/. ${totalCotizacion.toFixed(2)}</td>
+        </tr>`;
+
+        document.getElementById('cuerpoTablaCostos').innerHTML = htmlCuerpo;
+
+        // Sincronización con la vista del PDF
+        document.getElementById('pdfSubtitulo').innerText = `Cliente: ${cliente} · Sector: ${sector} · Sedes Operativas: ${sedes}`;
+        document.getElementById('pdfCodigo').innerText = codigoGenerado;
+        document.getElementById('pdfVersion').innerText = versionSelec;
+        document.getElementById('pdfSector').innerText = sector;
+
+        // Mostrar el bloque del Tópico Médico solo si hay al menos una sede con tópico
+        document.getElementById('boxTopico').style.display = (sedesTopico > 0) ? 'block' : 'none';
+
+        // Banners de precio mínimo
+        document.getElementById('alertaPrecioMinimo').style.display = hayBajoMinimoSinAutorizar ? 'block' : 'none';
+        document.getElementById('avisoPrecioAutorizado').style.display = hayReduccionAutorizada ? 'block' : 'none';
+        document.getElementById('detallePrecioMinimo').innerText = 'Uno o más servicios tienen un precio menor al mínimo permitido y fueron ajustados automáticamente al mínimo.';
+
+        // Datos de quien elabora la cotización
+        const elaborador = document.getElementById('elaborado_por').value || "—";
+        const contacto = document.getElementById('contacto_comercial').value || "—";
+        document.getElementById('pdfElaborador').innerText = elaborador;
+        document.getElementById('pdfContacto').innerText = contacto;
+
+        // PANEL INTERNO: utilidad y comisión (no se muestra en el PDF)
+        const utilidad = totalCotizacion - costoTotal;
+        const comisionFabricio = utilidad / 2;
+        document.getElementById('pcVenta').innerText = 'S/. ' + totalCotizacion.toFixed(2);
+        document.getElementById('pcCosto').innerText = 'S/. ' + costoTotal.toFixed(2);
+        document.getElementById('pcUtilidad').innerText = 'S/. ' + utilidad.toFixed(2);
+        document.getElementById('pcComision').innerText = 'S/. ' + comisionFabricio.toFixed(2);
+        const pcU = document.getElementById('pcUtilidad');
+        if (pcU) pcU.style.color = (utilidad < 0) ? '#c53030' : '#276749';
+        
+        const selectCredito = document.getElementById('credito');
+        document.getElementById('pdfDias').innerText = selectCredito.options[selectCredito.selectedIndex].text.split(' ')[0];
+
+        // Enlace de correo: se ENVÍA al cliente. Pharmony queda en copia (CC).
+        const correoCliente = document.getElementById('cliente_email').value.trim();
+        const asuntoCor = encodeURIComponent(`Propuesta del Sistema Corporativo Integrado OHI™ — Pharmony (${cliente})`);
+        const cuerpoCor = encodeURIComponent(`Estimado equipo de ${cliente},\n\nRemitimos los términos económicos del Sistema Corporativo Integrado de Inteligencia de Salud PHARMONY OHI™ bajo el registro oficial ${codigoGenerado}.\n\nInversión Cotizada: S/. ${totalCotizacion.toFixed(2)} (Neto sin IGV).\n\nQuedamos a su disposición para la coordinación del despliegue operativo.\n\nAtentamente,\n${elaborador !== "—" ? elaborador + "\n" : ""}Área Comercial\nPHARMONY SST`);
+        document.getElementById('btnEmail').href = `mailto:${correoCliente}?cc=comercialperu@pharmonysst.com&subject=${asuntoCor}&body=${cuerpoCor}`;
+    }
+
+    function descargarPDF() {
+        const element = document.getElementById('propuesta-pdf');
+        const clienteNom = document.getElementById('cliente').value || "Cliente";
+        const codigoDoc = document.getElementById('pdfCodigo').innerText;
+        window.scrollTo(0, 0);
+
+        const opt = {
+            margin:       [8, 8, 8, 8],
+            filename:     `PHARMONY_OHI_${clienteNom}_${codigoDoc}.pdf`,
+            image:        { type: 'jpeg', quality: 0.98 },
+            html2canvas:  {
+                scale: 2,
+                useCORS: true,
+                logging: false,
+                backgroundColor: '#ffffff',
+                scrollX: 0,
+                scrollY: 0,
+                windowWidth: element.scrollWidth
+            },
+            jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
+            pagebreak:    { mode: ['css', 'legacy'] }
+        };
+        html2pdf().set(opt).from(element).save();
+    }
+
+    window.onload = function() {
+        calcularTodo();
+    };
+</script>
+
+</body>
+</html>
